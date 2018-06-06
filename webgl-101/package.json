@@ -1,0 +1,13 @@
+{
+  "name": "webgl-101",
+  "version": "1.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.24.4",
+    "typescript": "^2.9.1"
+  },
+  "scripts": {
+    "tsc": "node_modules/.bin/tsc --pretty -w",
+    "server": "npm run tsc && node_modules/.bin/browser-sync start --watch --server '01-setup' --files '**/*.js'"
+  }
+}
