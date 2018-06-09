@@ -49,10 +49,11 @@ namespace Animation02 {
     }
 
     // vertex shader program
+    // prettier-ignore
     const vsSource = `
         attribute vec4 ${Attrs.Coords};
         attribute float ${Attrs.PointSize};
-                
+            
         void main(void) {
             gl_Position = ${Attrs.Coords};
             gl_PointSize = ${Attrs.PointSize};

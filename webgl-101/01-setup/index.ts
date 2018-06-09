@@ -2,32 +2,44 @@ namespace Setup01 {
     enum Attrs {
         Coords = 'aCoords',
         PointSize = 'aPointSize',
-        Colors = 'aVertexColors',
+        Colors = 'aVertexColors'
     }
 
     const colors = [
-        1.0, 1.0, 1.0, 1.0, // white
-        1.0, 0.0, 0.0, 1.0, // red
-        0.0, 1.0, 0.0, 1.0, // green
-        0.0, 0.0, 1.0, 1.0, // blue
+        1.0,
+        1.0,
+        1.0,
+        1.0, // white
+        1.0,
+        0.0,
+        0.0,
+        1.0, // red
+        0.0,
+        1.0,
+        0.0,
+        1.0, // green
+        0.0,
+        0.0,
+        1.0,
+        1.0 // blue
     ];
 
     type Optional<T> = T | undefined;
 
-// Collect all the info needed to use shader program.
-// Look up which attributes our shader program is using
-// for aVertexPosition, aVertexColor and also
-// look up for uniform locations
+    // Collect all the info needed to use shader program.
+    // Look up which attributes our shader program is using
+    // for aVertexPosition, aVertexColor and also
+    // look up for uniform locations
     interface IProgramInfo {
         readonly program: Optional<WebGLProgram>;
         attribLocations?: {
             vertexPosition: any;
             vertexColor: any;
-        },
+        };
         uniformLocations?: {
             projectMatrix: any;
             modelViewMatrix: any;
-        }
+        };
     }
 
     interface IState {
@@ -45,7 +57,7 @@ namespace Setup01 {
         readonly vertices: number[];
     }
 
-// vertex shader program
+    // vertex shader program
     const vsSource = `
     attribute vec4 ${Attrs.Coords};
     attribute float ${Attrs.PointSize};
@@ -56,7 +68,7 @@ namespace Setup01 {
     }
 `;
 
-// fragment shader program
+    // fragment shader program
     const fs = `
     precision mediump float;
     uniform vec4 color;
@@ -72,28 +84,30 @@ namespace Setup01 {
 
         constructor(props?: IProps) {
             console.log('webgl constructor');
-            const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+            const canvas = document.getElementById(
+                'canvas'
+            ) as HTMLCanvasElement;
             this.state = {
-                gl: canvas.getContext('webgl'),
+                gl: canvas.getContext('webgl')
             };
             this.props = {
                 ...props,
                 height: canvas.height,
-                width: canvas.width,
+                width: canvas.width
             };
             this.init();
         }
 
         public draw() {
-            const {gl} = this.state;
+            const { gl } = this.state;
             gl.clear(gl.COLOR_BUFFER_BIT);
             gl.drawArrays(gl.LINE_STRIP, 0, 10);
         }
 
         private init() {
             console.log('webgl init');
-            const {gl} = this.state;
-            const {height, width} = this.props;
+            const { gl } = this.state;
+            const { height, width } = this.props;
             gl.viewport(0, 0, width, height);
             gl.clearColor(1, 1, 1, 1);
 
@@ -103,22 +117,30 @@ namespace Setup01 {
         }
 
         private createShaders(): void {
-            const {gl} = this.state;
+            const { gl } = this.state;
 
             // vertex shader
             const vertexShader = gl.createShader(gl.VERTEX_SHADER);
             gl.shaderSource(vertexShader, vsSource);
             gl.compileShader(vertexShader);
-            if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS )) {
-                console.error(`An error occurred compiling the vertex shader. ${gl.getShaderInfoLog(vertexShader)}`);
+            if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+                console.error(
+                    `An error occurred compiling the vertex shader. ${gl.getShaderInfoLog(
+                        vertexShader
+                    )}`
+                );
                 return;
             }
 
             const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
             gl.shaderSource(fragmentShader, fs);
             gl.compileShader(fragmentShader);
-            if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS )) {
-                console.error(`An error occurred compiling the fragment shader. ${gl.getShaderInfoLog(fragmentShader)}`);
+            if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+                console.error(
+                    `An error occurred compiling the fragment shader. ${gl.getShaderInfoLog(
+                        fragmentShader
+                    )}`
+                );
                 return;
             }
 
@@ -133,7 +155,7 @@ namespace Setup01 {
                 programInfo: {
                     ...this.state.programInfo,
                     program
-                },
+                }
             };
 
             console.log('this.state ----->>>>');
@@ -141,12 +163,19 @@ namespace Setup01 {
         }
 
         private createVertices() {
-            const {gl, programInfo: {program}} = this.state;
-            const {vertices} = this.props;
+            const {
+                gl,
+                programInfo: { program }
+            } = this.state;
+            const { vertices } = this.props;
 
             const buffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            gl.bufferData(
+                gl.ARRAY_BUFFER,
+                new Float32Array(vertices),
+                gl.STATIC_DRAW
+            );
 
             const coords = gl.getAttribLocation(program, Attrs.Coords);
             // gl.vertexAttrib3f(coords, 0, 0.8, 0);
@@ -163,32 +192,60 @@ namespace Setup01 {
 
         private initBuffers() {
             // buffer colors
-            const {gl} = this.state;
-            const {vertices} = this.props;
+            const { gl } = this.state;
+            const { vertices } = this.props;
             const colorBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+            gl.bufferData(
+                gl.ARRAY_BUFFER,
+                new Float32Array(colors),
+                gl.STATIC_DRAW
+            );
 
             // buffer vertices
             const verticesBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, verticesBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            gl.bufferData(
+                gl.ARRAY_BUFFER,
+                new Float32Array(vertices),
+                gl.STATIC_DRAW
+            );
         }
     }
 
     const gp = new GlPoints({
         vertices: [
-            -0.9,  0.5, 0,
-            -0.7, -0.5, 0,
-            -0.5,  0.5, 0,
-            -0.3, -0.5, 0,
-            -0.1,  0.5, 0,
-            0.1, -0.5, 0,
-            0.3,  0.5, 0,
-            0.5, -0.5, 0,
-            0.7,  0.5, 0,
-            0.9, -0.5, 0
-        ],
+            -0.9,
+            0.5,
+            0,
+            -0.7,
+            -0.5,
+            0,
+            -0.5,
+            0.5,
+            0,
+            -0.3,
+            -0.5,
+            0,
+            -0.1,
+            0.5,
+            0,
+            0.1,
+            -0.5,
+            0,
+            0.3,
+            0.5,
+            0,
+            0.5,
+            -0.5,
+            0,
+            0.7,
+            0.5,
+            0,
+            0.9,
+            -0.5,
+            0
+        ]
     });
 
     gp.draw();

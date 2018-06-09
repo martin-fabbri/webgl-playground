@@ -1,11 +1,12 @@
-var Setup01;
-(function (Setup01) {
+var Animation02;
+(function (Animation02) {
     let Attrs;
     (function (Attrs) {
         Attrs["Coords"] = "aCoords";
         Attrs["PointSize"] = "aPointSize";
         Attrs["Colors"] = "aVertexColors";
     })(Attrs || (Attrs = {}));
+    const vertexCount = 5000;
     const colors = [
         1.0,
         1.0,
@@ -45,21 +46,29 @@ var Setup01;
 `;
     class GlPoints {
         constructor(props) {
-            console.log("webgl constructor");
-            const canvas = document.getElementById("canvas");
+            this.draw = () => {
+                console.log('Drawing ... ');
+                const { gl } = this.state;
+                const { vertices } = this.props;
+                for (let i = 0; i < vertexCount; i += 2) {
+                    vertices[i] += Math.random() * 0.01 - 0.005;
+                    vertices[i + 1] += Math.random() * 0.01 - 0.005;
+                }
+                gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(vertices));
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.drawArrays(gl.POINTS, 0, vertexCount);
+                requestAnimationFrame(this.draw);
+            };
+            console.log('webgl constructor');
+            const canvas = document.getElementById('canvas');
             this.state = {
-                gl: canvas.getContext("webgl")
+                gl: canvas.getContext('webgl')
             };
             this.props = Object.assign({}, props, { height: canvas.height, width: canvas.width });
             this.init();
         }
-        draw() {
-            const { gl } = this.state;
-            gl.clear(gl.COLOR_BUFFER_BIT);
-            gl.drawArrays(gl.LINE_STRIP, 0, 10);
-        }
         init() {
-            console.log("webgl init");
+            console.log('webgl init');
             const { gl } = this.state;
             const { height, width } = this.props;
             gl.viewport(0, 0, width, height);
@@ -91,24 +100,24 @@ var Setup01;
             gl.linkProgram(program);
             gl.useProgram(program);
             this.state = Object.assign({}, this.state, { programInfo: Object.assign({}, this.state.programInfo, { program }) });
-            console.log("this.state ----->>>>");
-            console.log("this.state", this.state);
+            console.log('this.state ----->>>>');
+            console.log('this.state', this.state);
         }
         createVertices() {
             const { gl, programInfo: { program } } = this.state;
             const { vertices } = this.props;
             const buffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.DYNAMIC_DRAW);
             const coords = gl.getAttribLocation(program, Attrs.Coords);
             // gl.vertexAttrib3f(coords, 0, 0.8, 0);
-            gl.vertexAttribPointer(coords, 3, gl.FLOAT, false, 0, 0);
+            gl.vertexAttribPointer(coords, 2, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(coords);
-            gl.bindBuffer(gl.ARRAY_BUFFER, null);
+            // gl.bindBuffer(gl.ARRAY_BUFFER, null);
             const pointSize = gl.getAttribLocation(program, Attrs.PointSize);
-            gl.vertexAttrib1f(pointSize, 30);
-            const color = gl.getUniformLocation(program, "color");
-            gl.uniform4f(color, 0, 1, 0, 1);
+            gl.vertexAttrib1f(pointSize, 2);
+            const color = gl.getUniformLocation(program, 'color');
+            gl.uniform4f(color, 1, 0, 1, 1);
         }
         initBuffers() {
             // buffer colors
@@ -123,40 +132,13 @@ var Setup01;
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         }
     }
+    const points = new Array(vertexCount * 2).fill(0).map(function (n) {
+        return Math.random() * 2 - 1;
+    });
+    console.log(points);
     const gp = new GlPoints({
-        vertices: [
-            -0.9,
-            0.5,
-            0,
-            -0.7,
-            -0.5,
-            0,
-            -0.5,
-            0.5,
-            0,
-            -0.3,
-            -0.5,
-            0,
-            -0.1,
-            0.5,
-            0,
-            0.1,
-            -0.5,
-            0,
-            0.3,
-            0.5,
-            0,
-            0.5,
-            -0.5,
-            0,
-            0.7,
-            0.5,
-            0,
-            0.9,
-            -0.5,
-            0
-        ]
+        vertices: points
     });
     gp.draw();
-})(Setup01 || (Setup01 = {}));
+})(Animation02 || (Animation02 = {}));
 //# sourceMappingURL=index.js.map

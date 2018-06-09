@@ -8,30 +8,42 @@ var Animation02;
     })(Attrs || (Attrs = {}));
     const vertexCount = 5000;
     const colors = [
-        1.0, 1.0, 1.0, 1.0,
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0 // blue
     ];
     // vertex shader program
     const vsSource = `
-    attribute vec4 ${Attrs.Coords};
-    attribute float ${Attrs.PointSize};
-            
-    void main(void) {
-        gl_Position = ${Attrs.Coords};
-        gl_PointSize = ${Attrs.PointSize};
-    }
-`;
+        attribute vec4 ${Attrs.Coords};
+        attribute float ${Attrs.PointSize};
+                
+        void main(void) {
+            gl_Position = ${Attrs.Coords};
+            gl_PointSize = ${Attrs.PointSize};
+        }
+    `;
     // fragment shader program
     const fs = `
-    precision mediump float;
-    uniform vec4 color;
-    
-    void main(void) {
-        gl_FragColor = color;
-    }
-`;
+        precision mediump float;
+        uniform vec4 color;
+        
+        void main(void) {
+            gl_FragColor = color;
+        }
+    `;
     class GlPoints {
         constructor(props) {
             this.draw = () => {
@@ -50,13 +62,13 @@ var Animation02;
             console.log('webgl constructor');
             const canvas = document.getElementById('canvas');
             this.state = {
-                gl: canvas.getContext('webgl'),
+                gl: canvas.getContext('webgl')
             };
             this.props = Object.assign({}, props, { height: canvas.height, width: canvas.width });
             this.init();
         }
         init() {
-            console.log('webgl init');
+            console.log("webgl init");
             const { gl } = this.state;
             const { height, width } = this.props;
             gl.viewport(0, 0, width, height);
@@ -88,8 +100,8 @@ var Animation02;
             gl.linkProgram(program);
             gl.useProgram(program);
             this.state = Object.assign({}, this.state, { programInfo: Object.assign({}, this.state.programInfo, { program }) });
-            console.log('this.state ----->>>>');
-            console.log('this.state', this.state);
+            console.log("this.state ----->>>>");
+            console.log("this.state", this.state);
         }
         createVertices() {
             const { gl, programInfo: { program } } = this.state;
@@ -104,7 +116,7 @@ var Animation02;
             // gl.bindBuffer(gl.ARRAY_BUFFER, null);
             const pointSize = gl.getAttribLocation(program, Attrs.PointSize);
             gl.vertexAttrib1f(pointSize, 2);
-            const color = gl.getUniformLocation(program, 'color');
+            const color = gl.getUniformLocation(program, "color");
             gl.uniform4f(color, 1, 0, 1, 1);
         }
         initBuffers() {
