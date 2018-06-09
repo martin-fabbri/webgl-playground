@@ -10,6 +10,6 @@
   "scripts": {
     "tsc": "node_modules/.bin/tsc --pretty -w",
     "tslint": "node_modules/.bin/tslint -c tslint.json '**/*.ts'",
-    "server": "npm run tsc && node_modules/.bin/browser-sync start --watch --server '01-setup' --files '**/*.js'"
+    "server": "npm run tsc & node_modules/.bin/browser-sync start --watch --server --files '**/*.js'"
   }
 }
