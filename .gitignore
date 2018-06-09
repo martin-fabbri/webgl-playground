@@ -60,6 +60,11 @@ typings/
 # next.js build output
 .next
 
+# generated js artifacts
+weggl-101/**/*.js
+weggl-101/**/*.js.map
+
+
 # Jetbrains IDEs
 .idea/
 
