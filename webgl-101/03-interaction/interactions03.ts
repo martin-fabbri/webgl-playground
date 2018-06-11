@@ -5,8 +5,6 @@ namespace Animation02 {
         Colors = 'aVertexColors'
     }
 
-    const vertexCount = 5000;
-
     // prettier-ignore
     const colors = [
         1.0, 1.0, 1.0, 1.0, // white
@@ -38,9 +36,12 @@ namespace Animation02 {
         // readonly colorsBuffer: Optional<WebGLBuffer>;
         // readonly verticesBuffer: Optional<WebGLBuffer>;
         readonly programInfo?: IProgramInfo;
+        mouseX: number;
+        mouseY: number;
     }
 
     interface IProps {
+        readonly canvas: HTMLCanvasElement;
         readonly color?: number[];
         readonly pointsSize?: number;
         readonly width?: number;
@@ -49,10 +50,11 @@ namespace Animation02 {
     }
 
     // vertex shader program
+    // prettier-ignore
     const vsSource = `
         attribute vec4 ${Attrs.Coords};
         attribute float ${Attrs.PointSize};
-                
+            
         void main(void) {
             gl_Position = ${Attrs.Coords};
             gl_PointSize = ${Attrs.PointSize};
@@ -69,34 +71,59 @@ namespace Animation02 {
         }
     `;
 
+    const map = (value: number, minSrc: number, maxSrc: number,
+                        minDst: number, maxDst: number) => {
+        return (value - minSrc) / (maxSrc - minSrc) * (maxDst - minDst) + minDst;
+    };
+
+
     class GlPoints {
         private state: IState;
         private readonly props: IProps;
 
         constructor(props?: IProps) {
-            console.log('webgl constructor');
-            const canvas = document.getElementById(
-                'canvas'
-            ) as HTMLCanvasElement;
+            const {canvas} = props;
+
             this.state = {
-                gl: canvas.getContext('webgl')
+                gl: canvas.getContext('webgl'),
+                mouseX: 0,
+                mouseY: 0
             };
+
             this.props = {
                 ...props,
                 height: canvas.height,
                 width: canvas.width
             };
+
+            canvas.addEventListener('mousemove', this.onMouseMoveHandler);
+
             this.init();
         }
 
         draw = () => {
-            console.log('Drawing ... ');
-            const { gl } = this.state;
+
+            const { gl, mouseX, mouseY } = this.state;
             const { vertices } = this.props;
 
+            // console.log('under draw', mouseX, mouseY);
+
             for (let i = 0; i < vertexCount; i += 2) {
-                vertices[i] += Math.random() * 0.01 - 0.005;
-                vertices[i + 1] += Math.random() * 0.01 - 0.005;
+                const dx = vertices[i] - mouseX;
+                const dy = vertices[i+1] - mouseY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+
+
+                if (dist < 0.2) {
+                    // console.log('Moving');
+                    vertices[i] = mouseX + dx / dist * 0.2;
+                    vertices[i + 1] = mouseY + dy / dist * 0.2;
+                } else {
+                    vertices[i] += Math.random() * 0.01 - 0.005;
+                    vertices[i + 1] += Math.random() * 0.01 - 0.005;
+                }
+
             }
 
             gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(vertices));
@@ -107,7 +134,7 @@ namespace Animation02 {
         };
 
         private init() {
-            console.log('webgl init');
+            // console.log('webgl init');
             const { gl } = this.state;
             const { height, width } = this.props;
             gl.viewport(0, 0, width, height);
@@ -117,6 +144,23 @@ namespace Animation02 {
             this.createShaders();
             this.createVertices();
         }
+
+        private readonly onMouseMoveHandler = (ev: MouseEvent) => {
+
+            // console.log('Mouse Move', ev.clientX, ev.clientY);
+            const {height, width} = this.props;
+
+            const mouseX = map(ev.clientX, 0, width, -1, 1);
+            const mouseY = map(ev.clientY, 0, height, 1, 0);
+
+            this.state = {
+                ...this.state,
+                mouseX,
+                mouseY
+            };
+
+            // console.log('this state', this.state.mouseX, this.state.mouseY);
+        };
 
         private createShaders() {
             const { gl } = this.state;
@@ -160,8 +204,8 @@ namespace Animation02 {
                 }
             };
 
-            console.log('this.state ----->>>>');
-            console.log('this.state', this.state);
+            // console.log('this.state ----->>>>');
+            // console.log('this.state', this.state);
         }
 
         private createVertices() {
@@ -215,13 +259,14 @@ namespace Animation02 {
         }
     }
 
-    const points = new Array(vertexCount * 2).fill(0).map(function(n) {
-        return Math.random() * 2 - 1;
-    });
+    const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
-    console.log(points);
+    const vertexCount = 5000;
+    const points = new Array(vertexCount * 2)
+        .fill(0).map(n => (Math.random() * 2 - 1));
 
     const gp = new GlPoints({
+        canvas,
         vertices: points
     });
 

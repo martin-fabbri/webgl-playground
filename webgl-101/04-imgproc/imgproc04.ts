@@ -1,19 +1,7 @@
 namespace Animation02 {
     enum Attrs {
-        Coords = 'aCoords',
-        PointSize = 'aPointSize',
-        Colors = 'aVertexColors'
+        Position = 'position'
     }
-
-    const vertexCount = 5000;
-
-    // prettier-ignore
-    const colors = [
-        1.0, 1.0, 1.0, 1.0, // white
-        1.0, 0.0, 0.0, 1.0, // red
-        0.0, 1.0, 0.0, 1.0, // green
-        0.0, 0.0, 1.0, 1.0 // blue
-    ];
 
     type Optional<T> = T | undefined;
 
@@ -41,31 +29,45 @@ namespace Animation02 {
     }
 
     interface IProps {
+        readonly canvas: HTMLCanvasElement;
         readonly color?: number[];
         readonly pointsSize?: number;
-        readonly width?: number;
-        readonly height?: number;
         readonly vertices: number[];
     }
 
     // vertex shader program
     // prettier-ignore
     const vsSource = `
-        attribute vec4 ${Attrs.Coords};
-        attribute float ${Attrs.PointSize};
-            
-        void main(void) {
-            gl_Position = ${Attrs.Coords};
-            gl_PointSize = ${Attrs.PointSize};
+        attribute vec2 position;
+        
+        varying vec2 texCoords;
+        
+        void main() {
+            texCoords = (position + 1.0) / 2.0;
+            texCoords.y = 1.0 - texCoords.y;
+            gl_Position = vec4(position, 0, 1.0);
         }
     `;
 
     // fragment shader program
     const fs = `
-        precision mediump float;
-        uniform vec4 color;
+        precision highp float;
+    
+        varying vec2 texCoords;
         
-        void main(void) {
+        uniform sampler2D textureSampler;
+    
+        void main() {
+            float warmth = 0.2;
+            float brightness = 0.2;
+            
+            vec4 color = texture2D(textureSampler, texCoords);
+            
+            color.r += warmth; 
+            color.b -= warmth;
+            
+            color.rgb += brightness; 
+            
             gl_FragColor = color;
         }
     `;
@@ -75,44 +77,48 @@ namespace Animation02 {
         private readonly props: IProps;
 
         constructor(props?: IProps) {
-            console.log('webgl constructor');
-            const canvas = document.getElementById(
-                'canvas'
-            ) as HTMLCanvasElement;
+            const {canvas} = props;
+
             this.state = {
                 gl: canvas.getContext('webgl')
             };
+
             this.props = {
-                ...props,
-                height: canvas.height,
-                width: canvas.width
+                ...props
             };
+
             this.init();
         }
 
         draw = () => {
-            console.log('Drawing ... ');
             const { gl } = this.state;
             const { vertices } = this.props;
 
-            for (let i = 0; i < vertexCount; i += 2) {
-                vertices[i] += Math.random() * 0.01 - 0.005;
-                vertices[i + 1] += Math.random() * 0.01 - 0.005;
-            }
+            const texture = gl.createTexture();
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,
+                gl.UNSIGNED_BYTE, image);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S,
+                gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T,
+                gl.CLAMP_TO_EDGE);
 
-            gl.bufferSubData(gl.ARRAY_BUFFER, 0, new Float32Array(vertices));
-            gl.clear(gl.COLOR_BUFFER_BIT);
-            gl.drawArrays(gl.POINTS, 0, vertexCount);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER,
+                gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER,
+                gl.LINEAR);
 
-            requestAnimationFrame(this.draw);
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
         };
 
         private init() {
-            console.log('webgl init');
+            // console.log('webgl init');
             const { gl } = this.state;
-            const { height, width } = this.props;
-            gl.viewport(0, 0, width, height);
-            gl.clearColor(1, 1, 1, 1);
+            gl.viewport(0, 0, gl.drawingBufferWidth,
+                gl.drawingBufferHeight);
+            gl.clearColor(1, 0.8, 0.1, 1);
+            gl.clear(gl.COLOR_BUFFER_BIT);
 
             this.initBuffers();
             this.createShaders();
@@ -160,9 +166,6 @@ namespace Animation02 {
                     program
                 }
             };
-
-            console.log('this.state ----->>>>');
-            console.log('this.state', this.state);
         }
 
         private createVertices() {
@@ -177,33 +180,23 @@ namespace Animation02 {
             gl.bufferData(
                 gl.ARRAY_BUFFER,
                 new Float32Array(vertices),
-                gl.DYNAMIC_DRAW
+                gl.STATIC_DRAW
             );
 
-            const coords = gl.getAttribLocation(program, Attrs.Coords);
+            const coords = gl.getAttribLocation(program, Attrs.Position);
             // gl.vertexAttrib3f(coords, 0, 0.8, 0);
             gl.vertexAttribPointer(coords, 2, gl.FLOAT, false, 0, 0);
             gl.enableVertexAttribArray(coords);
-            // gl.bindBuffer(gl.ARRAY_BUFFER, null);
+            gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-            const pointSize = gl.getAttribLocation(program, Attrs.PointSize);
-            gl.vertexAttrib1f(pointSize, 2);
-
-            const color = gl.getUniformLocation(program, 'color');
-            gl.uniform4f(color, 1, 0, 1, 1);
+            // const color = gl.getUniformLocation(program, 'color');
+            // gl.uniform4f(color, 0, 0, 0, 1);
         }
 
         private initBuffers() {
             // buffer colors
             const { gl } = this.state;
             const { vertices } = this.props;
-            const colorBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-            gl.bufferData(
-                gl.ARRAY_BUFFER,
-                new Float32Array(colors),
-                gl.STATIC_DRAW
-            );
 
             // buffer vertices
             const verticesBuffer = gl.createBuffer();
@@ -216,15 +209,27 @@ namespace Animation02 {
         }
     }
 
-    const points = new Array(vertexCount * 2).fill(0).map(function(n) {
-        return Math.random() * 2 - 1;
-    });
+    const image = new Image();
+    image.src = 'image.jpg';
+    image.onload = () => {
+        const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
 
-    console.log(points);
+        const gp = new GlPoints({
+            canvas,
+            vertices: [
+                -1, -1,
+                -1,  1,
+                1,  1,
+                -1, -1,
+                1,  1,
+                1, -1
+            ]
+        });
 
-    const gp = new GlPoints({
-        vertices: points
-    });
+        gp.draw();
+    }
 
-    gp.draw();
+
 }
