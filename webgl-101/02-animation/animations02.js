@@ -2,7 +2,7 @@ var Animation02;
 (function (Animation02) {
     let Attrs;
     (function (Attrs) {
-        Attrs["Position"] = "aCoords";
+        Attrs["Coords"] = "aCoords";
         Attrs["PointSize"] = "aPointSize";
         Attrs["Colors"] = "aVertexColors";
     })(Attrs || (Attrs = {}));

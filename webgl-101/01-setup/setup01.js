@@ -2,7 +2,7 @@ var Setup01;
 (function (Setup01) {
     let Attrs;
     (function (Attrs) {
-        Attrs["Position"] = "aCoords";
+        Attrs["Coords"] = "aCoords";
         Attrs["PointSize"] = "aPointSize";
         Attrs["Colors"] = "aVertexColors";
     })(Attrs || (Attrs = {}));

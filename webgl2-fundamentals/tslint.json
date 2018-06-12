@@ -1,0 +1,19 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:latest",
+        "tslint-config-prettier"
+    ],
+    "jsRules": {
+    },
+    "linterOptions": {
+        "exclude": [
+            "node_modules/**/*.ts",
+            "node_modules/**/*.js"
+        ]
+    },
+    "rules": {
+        "quotemark": [true, "single", "jsx-double"]
+    },
+    "rulesDirectory": []
+}
