@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+//    "module": "system",
+    "noImplicitAny": true,
+    "target": "es6",
+    "sourceMap": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
