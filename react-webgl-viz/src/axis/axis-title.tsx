@@ -1,8 +1,8 @@
-import * as React from 'react'
+import * as React from 'react';
 
-import styled, {theme} from '../theme/index';
+import styled, { theme } from '../theme/index';
 
-import {Orientation, TitlePosition} from '../utils/axis';
+import { Orientation, TitlePosition } from '../utils/axis';
 
 interface IProps {
     className?: string;
@@ -19,10 +19,10 @@ interface IDefaultProps {
     position: TitlePosition;
 }
 
-type PropsWithDefaults = IProps & IDefaultProps
+type PropsWithDefaults = IProps & IDefaultProps;
 
-const {Left, Right, Top, Bottom} = Orientation;
-const {Start, Middle, End} = TitlePosition;
+const { Left, Right, Top, Bottom } = Orientation;
+const { Start, Middle, End } = TitlePosition;
 
 const adjustmentForTextSize = 16; // Assuming that 16px = 1em
 const margin = 17; // px
@@ -35,20 +35,20 @@ const transformation = (width: number, height: number) => ({
         [End]: {
             rotation: -90,
             textAnchor: 'end',
-            x: - adjustmentForTextSize * 2.3,
-            y: margin,
+            x: -adjustmentForTextSize * 2.3,
+            y: margin
         },
         [Middle]: {
             rotation: -90,
             textAnchor: 'middle',
-            x: - adjustmentForTextSize * 2.3,
-            y: height / 2 - margin,
+            x: -adjustmentForTextSize * 2.3,
+            y: height / 2 - margin
         },
         [Start]: {
             rotation: -90,
             textAnchor: 'start',
-            x: - adjustmentForTextSize * 2.3,
-            y: height - margin,
+            x: -adjustmentForTextSize * 2.3,
+            y: height - margin
         }
     },
     [Right]: {
@@ -56,19 +56,19 @@ const transformation = (width: number, height: number) => ({
             rotation: -90,
             textAnchor: 'end',
             x: width + adjustmentForTextSize * -0.5,
-            y: margin,
+            y: margin
         },
         [Middle]: {
             rotation: -90,
             textAnchor: 'middle',
             x: width + adjustmentForTextSize * -0.5,
-            y: height / 2 - margin,
+            y: height / 2 - margin
         },
         [Start]: {
             rotation: -90,
             textAnchor: 'start',
             x: width + adjustmentForTextSize * -0.5,
-            y: height - margin,
+            y: height - margin
         }
     },
     [Top]: {
@@ -76,19 +76,19 @@ const transformation = (width: number, height: number) => ({
             rotation: 0,
             textAnchor: 'start',
             x: margin,
-            y: adjustmentForTextSize,
+            y: adjustmentForTextSize
         },
         [Middle]: {
             rotation: 0,
             textAnchor: 'middle',
             x: width / 2 - margin,
-            y: adjustmentForTextSize,
+            y: adjustmentForTextSize
         },
         [End]: {
             rotation: 0,
             textAnchor: 'end',
             x: width - margin,
-            y: adjustmentForTextSize,
+            y: adjustmentForTextSize
         }
     },
     [Bottom]: {
@@ -96,32 +96,32 @@ const transformation = (width: number, height: number) => ({
             rotation: 0,
             textAnchor: 'start',
             x: margin,
-            y: margin + adjustmentForTextSize,
+            y: margin + adjustmentForTextSize
         },
         [Middle]: {
             rotation: 0,
             textAnchor: 'middle',
             x: width / 2 - margin,
-            y: margin + adjustmentForTextSize,
+            y: margin + adjustmentForTextSize
         },
         [End]: {
             rotation: 0,
             textAnchor: 'end',
             x: width - margin,
-            y: margin + adjustmentForTextSize,
+            y: margin + adjustmentForTextSize
         }
     }
 });
 
 class AxisTitle extends React.Component<IProps> {
-
     public static defaultProps: IDefaultProps = {
         position: Middle,
-        style: {},
+        style: {}
     };
 
     public render() {
-        const {orientation, position, width, height, style, title, className} = this.props as PropsWithDefaults;
+        const { orientation, position, width, height, style, title, className } = this
+            .props as PropsWithDefaults;
 
         // default orientation = top
         let outerGroupTranslateX = 0;
@@ -142,19 +142,19 @@ class AxisTitle extends React.Component<IProps> {
         }
 
         const outerGroupTransform = `translate(${outerGroupTranslateX}, ${outerGroupTranslateY})`;
-        const titleTransformations: {[o: string]: any} = transformation(width, height)
-        const {x, y, rotation, textAnchor} = titleTransformations[orientation][position];
+        const titleTransformations: { [o: string]: any } = transformation(width, height);
+        const { x, y, rotation, textAnchor } = titleTransformations[orientation][position];
         const innerGroupTransform = `translate(${x}, ${y}) rotate(${rotation})`;
 
         return (
             <g transform={outerGroupTransform} className={className}>
-                <g style={{textAnchor, ...style}} transform={innerGroupTransform}>
+                <g style={{ textAnchor, ...style }} transform={innerGroupTransform}>
                     <text style={style}>{title}</text>
                 </g>
             </g>
         );
     }
-};
+}
 
 const StyledAxisTitle = styled(AxisTitle)`
     text {

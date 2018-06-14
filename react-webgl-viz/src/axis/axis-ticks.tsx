@@ -1,10 +1,10 @@
-import * as React from 'react'
+import * as React from 'react';
 
-import styled, {theme} from '../theme/index';
+import styled, { theme } from '../theme/index';
 
-import {Orientation} from '../utils/axis';
+import { Orientation } from '../utils/axis';
 
-import {getScaleFunc, Scale, ScaleTypes} from '../utils/scales';
+import { getScaleFunc, Scale, ScaleTypes } from '../utils/scales';
 
 interface IProps {
     className?: string;
@@ -35,14 +35,13 @@ interface IDefaultProps {
     tickPadding: number;
 }
 
-type PropsWithDefaults = IProps & IDefaultProps
+type PropsWithDefaults = IProps & IDefaultProps;
 
-const {Left, Right, Bottom, Top} = Orientation
+const { Left, Right, Bottom, Top } = Orientation;
 
 const defaultTickFormat = (v: number) => v.toString();
 
 class AxisTicks extends React.Component<IProps> {
-
     public static defaultProps: IDefaultProps = {
         scale: 'linear',
         style: {},
@@ -51,12 +50,22 @@ class AxisTicks extends React.Component<IProps> {
         tickOffset: 7,
         tickPadding: 2,
         tickSize: 8,
-        tickSizeOuter: 0,
+        tickSizeOuter: 0
     };
 
     public render() {
-        const {domain, width, height, orientation, className, range,
-            scale, tickFormat, tickOffset, tickValues} = this.props as PropsWithDefaults;
+        const {
+            domain,
+            width,
+            height,
+            orientation,
+            className,
+            range,
+            scale,
+            tickFormat,
+            tickOffset,
+            tickValues
+        } = this.props as PropsWithDefaults;
 
         // orientation === top
         let x = 0;
@@ -115,41 +124,37 @@ class AxisTicks extends React.Component<IProps> {
 
             return (
                 <g key={i} {...translateFn(pos, tickOffset)}>
-                    <line {...pathProps}
-                          className={className}
-                    />
+                    <line {...pathProps} className={className} />
                     <text {...labelProps}>{tickFormat(value)}</text>
                 </g>
             );
         });
 
         return (
-            <g
-                transform={`translate(${x}, ${y})`}
-                className={className}>
+            <g transform={`translate(${x}, ${y})`} className={className}>
                 {ticks}
             </g>
-        )
+        );
     }
 
     private isAxisVertical() {
-        const {orientation} = this.props as PropsWithDefaults
-        return orientation === Left || orientation === Right
+        const { orientation } = this.props as PropsWithDefaults;
+        return orientation === Left || orientation === Right;
     }
 
     private areTicksWrapped() {
-        const {orientation} = this.props as PropsWithDefaults
-        return orientation === Left || orientation === Right
+        const { orientation } = this.props as PropsWithDefaults;
+        return orientation === Left || orientation === Right;
     }
 
     private getTickContainerProps() {
-        return this.isAxisVertical() ?
-            (pos: number, offset: number) => ({transform: `translate(${-offset}, ${pos})`}) :
-            (pos: number, offset: number) => ({transform: `translate(${pos}, ${offset})`})
+        return this.isAxisVertical()
+            ? (pos: number, offset: number) => ({ transform: `translate(${-offset}, ${pos})` })
+            : (pos: number, offset: number) => ({ transform: `translate(${pos}, ${offset})` });
     }
 
     private getTickLineProps() {
-        const {tickSize} = this.props as PropsWithDefaults;
+        const { tickSize } = this.props as PropsWithDefaults;
         const isVertical = this.isAxisVertical();
         const tickXAttr = isVertical ? 'y' : 'x';
         const tickYAttr = isVertical ? 'x' : 'y';
@@ -163,12 +168,13 @@ class AxisTicks extends React.Component<IProps> {
     }
 
     private getTickLabelProps() {
-        const {orientation, tickLabelAngle, tickSizeOuter, tickPadding} = this.props as PropsWithDefaults;
+        const { orientation, tickLabelAngle, tickSizeOuter, tickPadding } = this
+            .props as PropsWithDefaults;
 
         let textAnchor = 'middle';
-        if (orientation === Left || (orientation === Bottom) && tickLabelAngle) {
+        if (orientation === Left || (orientation === Bottom && tickLabelAngle)) {
             textAnchor = 'end';
-        } else if (orientation === Right || (orientation === Top) && tickLabelAngle) {
+        } else if (orientation === Right || (orientation === Top && tickLabelAngle)) {
             textAnchor = 'start';
         }
 
@@ -177,18 +183,25 @@ class AxisTicks extends React.Component<IProps> {
 
         const labelOffset = wrap * (tickSizeOuter + tickPadding);
 
-        const translate = (isVertical ? `translate(${labelOffset}, 0)` : `translate(${labelOffset}, 0)`);
-        const rotate = (tickLabelAngle ? ` rotate(${tickLabelAngle}, 0)` : '');
+        const translate = isVertical
+            ? `translate(${labelOffset}, 0)`
+            : `translate(${labelOffset}, 0)`;
+        const rotate = tickLabelAngle ? ` rotate(${tickLabelAngle}, 0)` : '';
         const transform = translate + rotate;
 
-        const dy = (orientation === Top || tickLabelAngle) ? '0' : (orientation === Bottom ? '0.72em' : '0.32em');
+        const dy =
+            orientation === Top || tickLabelAngle
+                ? '0'
+                : orientation === Bottom
+                    ? '0.72em'
+                    : '0.32em';
         return {
             dy,
             textAnchor,
             transform
-        }
+        };
     }
-};
+}
 
 const StyledAxisTicks = styled(AxisTicks)`
     line {

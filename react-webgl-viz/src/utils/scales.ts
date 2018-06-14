@@ -1,6 +1,6 @@
-import {max, min} from 'd3';
+import { max, min } from 'd3';
 
-import {scaleLinear,} from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 
 export type Range = [number, number];
 export type Domain = [number, number];
@@ -48,7 +48,9 @@ function linearFunc(range: Range, data?: DatumSlice, domain?: Domain) {
  */
 export function getScaleFunc(s: Scale) {
     switch (s.kind) {
-        case 'linear': return linearFunc(s.range, s.data, s.domain);
-        case 'log': return linearFunc(s.range, s.data, s.domain);
+        case 'linear':
+            return linearFunc(s.range, s.data, s.domain);
+        case 'log':
+            return linearFunc(s.range, s.data, s.domain);
     }
 }

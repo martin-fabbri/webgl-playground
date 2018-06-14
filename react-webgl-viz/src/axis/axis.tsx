@@ -6,8 +6,8 @@ import AxisTitle from './axis-title';
 
 import styled from '../theme/index';
 
-import {Orientation, ticksTotalFromSize, TitlePosition} from '../utils/axis';
-import {ScaleTypes} from '../utils/scales';
+import { Orientation, ticksTotalFromSize, TitlePosition } from '../utils/axis';
+import { ScaleTypes } from '../utils/scales';
 
 export interface IProps {
     className?: string;
@@ -65,9 +65,9 @@ export interface IDefaultProps {
     orientation: Orientation;
 }
 
-export type PropsWithDefaults = IProps & IDefaultProps
+export type PropsWithDefaults = IProps & IDefaultProps;
 
-const {Left, Top, Bottom} = Orientation;
+const { Left, Top, Bottom } = Orientation;
 
 class Axis extends React.Component<IProps> {
     public static defaultProps: IDefaultProps = {
@@ -76,7 +76,7 @@ class Axis extends React.Component<IProps> {
         hideTicks: false,
         innerHeight: 0,
         innerWidth: 0,
-        left:0,
+        left: 0,
         marginBottom: 0,
         marginLeft: 0,
         marginRight: 0,
@@ -87,39 +87,39 @@ class Axis extends React.Component<IProps> {
     };
 
     public render() {
-        const {className, style} = this.props as PropsWithDefaults;
-        const {hideLine, hideTicks} = this.props as PropsWithDefaults;
-        const {height, width, orientation} = this.props as PropsWithDefaults;
-        const {title, position} = this.props as PropsWithDefaults;
+        const { className, style } = this.props as PropsWithDefaults;
+        const { hideLine, hideTicks } = this.props as PropsWithDefaults;
+        const { height, width, orientation } = this.props as PropsWithDefaults;
+        const { title, position } = this.props as PropsWithDefaults;
         const props = {
             ...this.getDefaultAxisProps(),
-            ...this.props as PropsWithDefaults
+            ...(this.props as PropsWithDefaults)
         };
-        const {left, top} = this.props as PropsWithDefaults;
+        const { left, top } = this.props as PropsWithDefaults;
 
         return (
-            <g
-                transform={`translate(${left},${top})`}
-                className={className}
-                style={style}>
-                {!hideLine && (<AxisLine
-                    height={height}
-                    width={width}
-                    orientation={orientation}
-                    style={style}
-                />)}
-                {!hideTicks && (<AxisTicks
-                    {...props} style={style}
-                />)}
-                {title ?
+            <g transform={`translate(${left},${top})`} className={className} style={style}>
+                {!hideLine && (
+                    <AxisLine
+                        height={height}
+                        width={width}
+                        orientation={orientation}
+                        style={style}
+                    />
+                )}
+                {!hideTicks && <AxisTicks {...props} style={style} />}
+                {title ? (
                     <AxisTitle
                         position={position}
                         title={title}
                         height={height}
                         width={width}
                         style={style}
-                        orientation={orientation}/> :
-                    undefined}
+                        orientation={orientation}
+                    />
+                ) : (
+                    undefined
+                )}
             </g>
         );
     }
@@ -142,7 +142,7 @@ class Axis extends React.Component<IProps> {
                     left: marginLeft,
                     tickTotal: ticksTotalFromSize(innerWidth),
                     top: innerHeight + marginTop,
-                    width: innerWidth,
+                    width: innerWidth
                 };
             case Top:
                 return {
@@ -150,7 +150,7 @@ class Axis extends React.Component<IProps> {
                     left: marginLeft,
                     tickTotal: ticksTotalFromSize(innerWidth),
                     top: 0,
-                    width: innerWidth,
+                    width: innerWidth
                 };
             case Left:
                 return {
@@ -158,7 +158,7 @@ class Axis extends React.Component<IProps> {
                     left: 0,
                     tickTotal: ticksTotalFromSize(innerHeight),
                     top: marginTop,
-                    width: marginLeft,
+                    width: marginLeft
                 };
             default:
                 return {
@@ -166,15 +166,12 @@ class Axis extends React.Component<IProps> {
                     left: marginLeft + innerWidth,
                     tickTotal: ticksTotalFromSize(innerHeight),
                     top: marginTop,
-                    width: marginRight,
+                    width: marginRight
                 };
         }
-
     }
 }
 
-const StyledAxis = styled(Axis)`
-    
-`;
+const StyledAxis = styled(Axis)``;
 
 export default StyledAxis;

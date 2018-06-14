@@ -1,13 +1,15 @@
-import * as React from 'react'
+import * as React from 'react';
 
 import styled from '../theme/index';
-import BaseSeries, {IDefaultProps as IBaseSeriesDefaultProps, IProps as IBaseSeriesProps} from './base-series';
+import BaseSeries, {
+    IDefaultProps as IBaseSeriesDefaultProps,
+    IProps as IBaseSeriesProps
+} from './base-series';
 
-import {getScaleFunc, IDatum} from '../utils/scales';
+import { getScaleFunc, IDatum } from '../utils/scales';
 
-import {ScaleContinuousNumeric} from 'd3-scale';
-import {area, curveCardinal} from 'd3-shape';
-
+import { ScaleContinuousNumeric } from 'd3-scale';
+import { area, curveCardinal } from 'd3-shape';
 
 export interface IProps extends IBaseSeriesProps<SVGElement> {
     y0: [number, number];
@@ -15,12 +17,20 @@ export interface IProps extends IBaseSeriesProps<SVGElement> {
 
 export type PropsWithDefaults = IProps & IBaseSeriesDefaultProps;
 
-
 class AreaSeries extends BaseSeries<SVGElement, IProps> {
-
     public render() {
-        const {className, curve, data, marginLeft, marginTop,
-            xDomain, xRange, yDomain, yRange, y0} = this.props as PropsWithDefaults;
+        const {
+            className,
+            curve,
+            data,
+            marginLeft,
+            marginTop,
+            xDomain,
+            xRange,
+            yDomain,
+            yRange,
+            y0
+        } = this.props as PropsWithDefaults;
         // const {animation} = this.props;
 
         if (!data) {
@@ -34,7 +44,6 @@ class AreaSeries extends BaseSeries<SVGElement, IProps> {
         //         </Animation>
         //     );
         // }
-
 
         const x = getScaleFunc({
             data: xDomain ? undefined : data.map(elem => elem.x),
@@ -76,29 +85,29 @@ class AreaSeries extends BaseSeries<SVGElement, IProps> {
         );
     }
 
-
-    private renderArea(data: IDatum[],
-                       x: ScaleContinuousNumeric<number, number>,
-                       y: ScaleContinuousNumeric<number, number>,
-                       y0: [number, number],
-                       curve?: string) {
-
-        const l =  area<IDatum>()
+    private renderArea(
+        data: IDatum[],
+        x: ScaleContinuousNumeric<number, number>,
+        y: ScaleContinuousNumeric<number, number>,
+        y0: [number, number],
+        curve?: string
+    ) {
+        const l = area<IDatum>()
             .x(d => x(d.x))
             .y0(y0[0])
             .y1(d => y(d.y))
             .curve(curveCardinal);
         return l.call(this, data);
     }
-};
+}
 
 const StyledAreaSeries = styled(AreaSeries)`
     fill: #64afaf;
     stroke: teal;
-    stroke-width: 2px;    
+    stroke-width: 2px;
     opacity: 0.75;
     path {
-      pointer-events: all;
+        pointer-events: all;
     }
 `;
 

@@ -31,4 +31,4 @@ export const ticksTotalFromSize = (size: number) => {
         return 5;
     }
     return 20;
-}
+};

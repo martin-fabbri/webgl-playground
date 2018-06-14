@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {IDatum} from '../utils/scales';
+import { IDatum } from '../utils/scales';
 // type MouseEventHandler = (event: React.MouseEvent<HTMLElement>) => void;
 
 export interface IProps<T> {
@@ -42,10 +42,9 @@ export interface IDefaultProps {
     strokeStyle: string;
 }
 
-export type PropsWithDefaults<T> = IProps<T> & IDefaultProps
+export type PropsWithDefaults<T> = IProps<T> & IDefaultProps;
 
 class BaseSeries<T, P extends IProps<T>> extends React.Component<P> {
-
     static get requireSVG() {
         return true;
     }
@@ -56,15 +55,15 @@ class BaseSeries<T, P extends IProps<T>> extends React.Component<P> {
         marginTop: 0,
         stack: false,
         strokeStyle: 'solid',
-        style: {},
+        style: {}
     };
 
     protected handleOnSeriesMouseOver = (ev: React.MouseEvent<T>) => {
-        const {onSeriesMouseOver} = this.props as PropsWithDefaults<T>;
+        const { onSeriesMouseOver } = this.props as PropsWithDefaults<T>;
         if (onSeriesMouseOver) {
-            onSeriesMouseOver(ev)
+            onSeriesMouseOver(ev);
         }
-    }
-};
+    };
+}
 
 export default BaseSeries;

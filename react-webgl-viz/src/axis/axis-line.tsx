@@ -1,8 +1,8 @@
-import * as React from 'react'
+import * as React from 'react';
 
-import styled, {theme} from '../theme/index';
+import styled, { theme } from '../theme/index';
 
-import {Orientation} from '../utils/axis'
+import { Orientation } from '../utils/axis';
 
 interface IProps {
     className?: string;
@@ -18,27 +18,25 @@ interface IDefaultProps {
 
 type PropsWithDefaults = IProps & IDefaultProps;
 
-const {Bottom, Left, Right} = Orientation;
+const { Bottom, Left, Right } = Orientation;
 
 class AxisLine extends React.Component<IProps> {
-
     public static defaultProps: IDefaultProps = {
-        style: {},
+        style: {}
     };
 
     public render() {
-
-        const {height, style, orientation, width, className} = this.props as PropsWithDefaults;
+        const { height, style, orientation, width, className } = this.props as PropsWithDefaults;
 
         // default orientation Top
         let lineProps = {
             x1: 0,
             x2: width,
             y1: 0,
-            y2: 0,
+            y2: 0
         };
 
-        switch(orientation) {
+        switch (orientation) {
             case Bottom: {
                 lineProps = {
                     x1: 0,
@@ -68,11 +66,9 @@ class AxisLine extends React.Component<IProps> {
             }
         }
 
-        return (
-            <line {...lineProps} style={style} className={className}/>
-        )
+        return <line {...lineProps} style={style} className={className} />;
     }
-};
+}
 
 const StyledAxisLine = styled(AxisLine)`
     fill: none;

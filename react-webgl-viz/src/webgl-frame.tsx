@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 
 import styled from './theme';
 import Program from './utils/program';
@@ -28,7 +28,7 @@ interface IDefaultProps {
     useDevicePixels?: boolean;
 }
 
-type PropsWithDefaults = IProps & IDefaultProps
+type PropsWithDefaults = IProps & IDefaultProps;
 
 class WebglFrame extends React.Component<IProps, IState> {
     public static defaultProps: IDefaultProps = {
@@ -62,14 +62,12 @@ class WebglFrame extends React.Component<IProps, IState> {
     }
 
     public render() {
-        return (
-            <canvas ref={this.canvasRef}/>
-        );
+        return <canvas ref={this.canvasRef} />;
     }
 
     private onContextCreationError = () => {
         // handle context creation error
-    }
+    };
 
     /**
      * Resize the canvas' drawing buffer.
@@ -86,8 +84,8 @@ class WebglFrame extends React.Component<IProps, IState> {
      * resizeGLContext(gl, {width, height, useDevicePixels})
      */
     private resizeGLContext() {
-        const {gl} = this.state;
-        const {height, useDevicePixels, width} = this.props as PropsWithDefaults;
+        const { gl } = this.state;
+        const { height, useDevicePixels, width } = this.props as PropsWithDefaults;
 
         // Resize browser context
         if (gl.canvas) {
@@ -103,8 +101,8 @@ class WebglFrame extends React.Component<IProps, IState> {
 
     // default viewport setup
     private resizeViewport() {
-        const {gl} = this.state;
-        const {autoResizeViewport} = this.props as PropsWithDefaults;
+        const { gl } = this.state;
+        const { autoResizeViewport } = this.props as PropsWithDefaults;
         if (autoResizeViewport) {
             gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
         }
@@ -112,11 +110,11 @@ class WebglFrame extends React.Component<IProps, IState> {
 }
 
 const StyledWebglFrame = styled(WebglFrame)`
-  canvas {
-    display: block;
-    width: 100px;
-    height: 100px;
-  }
+    canvas {
+        display: block;
+        width: 100px;
+        height: 100px;
+    }
 `;
 
 export default StyledWebglFrame;

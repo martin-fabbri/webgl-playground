@@ -1,11 +1,11 @@
-import * as React from 'react'
+import * as React from 'react';
 
 import styled from '../theme/index';
-import BaseSeries, {IProps, PropsWithDefaults} from './base-series';
+import BaseSeries, { IProps, PropsWithDefaults } from './base-series';
 
-import {getScaleFunc, IDatum} from '../utils/scales';
+import { getScaleFunc, IDatum } from '../utils/scales';
 
-import {curveCardinal, line} from 'd3-shape';
+import { curveCardinal, line } from 'd3-shape';
 
 // const strokeStyles = {
 //     dashed: '6, 2',
@@ -13,9 +13,9 @@ import {curveCardinal, line} from 'd3-shape';
 // };
 
 class LineSeries extends BaseSeries<SVGElement, IProps<SVGElement>> {
-
     public render() {
-        const {className, data, xDomain, xRange, yDomain, yRange} = this.props as PropsWithDefaults<SVGElement>;
+        const { className, data, xDomain, xRange, yDomain, yRange } = this
+            .props as PropsWithDefaults<SVGElement>;
         // const {animation} = this.props;
 
         if (!data) {
@@ -33,7 +33,7 @@ class LineSeries extends BaseSeries<SVGElement, IProps<SVGElement>> {
         const {
             curve,
             marginLeft,
-            marginTop,
+            marginTop
             // strokeDasharray,
             // strokeStyle,
             // strokeWidth,
@@ -81,20 +81,20 @@ class LineSeries extends BaseSeries<SVGElement, IProps<SVGElement>> {
     }
 
     private renderLine(data: IDatum[], x: any, y: any, curve?: string): any {
-        const l =  line<IDatum>()
+        const l = line<IDatum>()
             .x(d => x(d.x))
             .y(d => y(d.y))
             .curve(curveCardinal);
         return l.call(this, data);
     }
-};
+}
 
 const StyledLineSeries = styled(LineSeries)`
     fill: none;
     stroke: black;
-    stroke-width: 2px;    
+    stroke-width: 2px;
     path {
-      pointer-events: all;
+        pointer-events: all;
     }
 `;
 

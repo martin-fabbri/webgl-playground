@@ -19,7 +19,7 @@ export const theme = {
     xyPlotAxisFontColor: '#6b6b76',
     xyPlotAxisFontSize: '11px',
     // -> ticks
-    xyPlotAxisLineColor: '#e6e6e9',
+    xyPlotAxisLineColor: '#e6e6e9'
 };
 
 export default styled;
