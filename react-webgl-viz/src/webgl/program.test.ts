@@ -1,4 +1,7 @@
-import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from './../../test/webgl2-canvas-mock';
+import {
+    HTMLCanvasElementMock,
+    WebGL2RenderingContextMock
+} from '../../test/webgl2-canvas-mock/index';
 import Program, { IProgramProps } from './program';
 
 const vs = `

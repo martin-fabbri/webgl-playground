@@ -38,7 +38,6 @@ abstract class Resource {
     }
 
     protected abstract createHandle(): Handle;
-
 }
 
 export default Resource;

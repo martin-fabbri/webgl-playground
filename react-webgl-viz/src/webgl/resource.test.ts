@@ -1,4 +1,7 @@
-import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
+import {
+    HTMLCanvasElementMock,
+    WebGL2RenderingContextMock
+} from '../../test/webgl2-canvas-mock/index';
 import { default as Resource, Handle, IResourceProps, uid } from './resource';
 
 const canvas = new HTMLCanvasElementMock(100, 100);
@@ -15,7 +18,7 @@ class TestResource extends Resource {
     }
 }
 
-const testHandle: Handle = {id: 'test'};
+const testHandle: Handle = { id: 'test' };
 
 describe('WebGL#Resouce', () => {
     it('generates a new uid with default name prefix', () => {
@@ -51,15 +54,13 @@ describe('WebGL#Resouce', () => {
         expect(testResource2.id).toContain('TestResource');
         expect(testResource2.id).toContain('2');
         expect(testResource2.handle).toBeDefined();
-
     });
 
     it('creates a resource; assign handle passed in props', () => {
-        const testResource = new TestResource(gl, {handle: testHandle});
+        const testResource = new TestResource(gl, { handle: testHandle });
         expect(testResource).toBeInstanceOf(TestResource);
         expect(testResource.id).toContain('TestResource');
         expect(testResource.handle).toBeDefined();
         expect(testResource.handle).toBe(testHandle);
     });
 });
-

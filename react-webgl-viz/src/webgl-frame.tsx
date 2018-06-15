@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import styled from './theme';
-import Program from './utils/program';
+import Program from './webgl/program';
 
 interface IState {
     gl: WebGL2RenderingContext;

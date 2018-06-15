@@ -8,10 +8,20 @@ export interface IProgramProps extends IResourceProps {
     // , fs, defaultUniforms, varyings, bufferMode = GL_SEPARATE_ATTRIBS
 }
 
+export interface IProgramBuffers {
+    [index: string]: any;
+}
+
 export default class Program extends Resource {
+    // private readonly vs: WebGLShader;
+
     constructor(gl: WebGL2RenderingContext, props: IProgramProps) {
         super(gl);
         this.initialize(props);
+    }
+
+    public setBuffers(buffers: IProgramBuffers) {
+        return this;
     }
 
     public delete() {
