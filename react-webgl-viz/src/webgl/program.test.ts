@@ -1,26 +1,15 @@
 import {
+    fs,
+    vs
+} from '../../test/webgl2-canvas-mock/fixture';
+
+import {
     HTMLCanvasElementMock,
     WebGL2RenderingContextMock
-} from '../../test/webgl2-canvas-mock/index';
+} from '../../test/webgl2-canvas-mock';
+
 import Program, { IProgramProps } from './program';
 
-const vs = `
-attribute vec3 positions;
-uniform mat4 uMVMatrix;
-uniform mat4 uPMatrix;
-varying vec3 vPosition;
-
-void main(void) {
-  gl_Position = uPMatrix * uMVMatrix * vec4(positions, 1.0);
-  vPosition = positions;
-}
-`;
-
-const fs = `
-void main(void) {
-  gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-}
-`;
 
 // const BUFFER_DATA = new Float32Array([0, 1, 0, -1, -1, 0, 1, -1, 0]);
 

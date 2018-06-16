@@ -9,7 +9,7 @@ export function uid(id = 'resource-id') {
     return `${id}-${count}`;
 }
 
-export type Handle = WebGLVertexArrayObject | undefined | null;
+export type Handle = WebGLShader | WebGLVertexArrayObject | undefined | null;
 
 export interface IResourceProps {
     id?: string;

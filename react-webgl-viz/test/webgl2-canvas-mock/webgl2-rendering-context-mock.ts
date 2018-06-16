@@ -1,3 +1,19 @@
+import {
+    fragmentShader,
+    fs,
+    invalidShaderInfoLog, invalidSource,
+    vertexShader,
+    vs
+} from './fixture';
+
+export interface IWebGLShaderMock extends WebGLShader {
+    type: number,
+    compiled: boolean,
+    hasErrors: boolean,
+    source: string | undefined,
+    infoLog: string | null
+}
+
 class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     public readonly ACTIVE_ATTRIBUTES: number;
     public readonly ACTIVE_TEXTURE: number;
@@ -56,7 +72,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     public readonly COLOR_CLEAR_VALUE: number;
     public readonly COLOR_WRITEMASK: number;
     public readonly COMPARE_REF_TO_TEXTURE: number;
-    public readonly COMPILE_STATUS: number;
+    public readonly COMPILE_STATUS: number = 0x8B81;
     public readonly COMPRESSED_TEXTURE_FORMATS: number;
     public readonly CONDITION_SATISFIED: number;
     public readonly CONSTANT_ALPHA: number;
@@ -142,7 +158,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     public readonly FLOAT_VEC2: number;
     public readonly FLOAT_VEC3: number;
     public readonly FLOAT_VEC4: number;
-    public readonly FRAGMENT_SHADER: number;
+    public readonly FRAGMENT_SHADER: number = 0x8B30;
     public readonly FRAGMENT_SHADER_DERIVATIVE_HINT: number;
     public readonly FRAMEBUFFER: number;
     public readonly FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE: number;
@@ -562,7 +578,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     public readonly VERTEX_ATTRIB_ARRAY_SIZE: number;
     public readonly VERTEX_ATTRIB_ARRAY_STRIDE: number;
     public readonly VERTEX_ATTRIB_ARRAY_TYPE: number;
-    public readonly VERTEX_SHADER: number;
+    public readonly VERTEX_SHADER: number = 0x8B31;
     public readonly VIEWPORT: number;
     public readonly WAIT_FAILED: number;
     public readonly ZERO: number;
@@ -903,6 +919,15 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public compileShader(shader: WebGLShader | null): void {
+        const s = shader as IWebGLShaderMock;
+        if ((s.source === vs) || (s.source === fs)) {
+            s.compiled = true;
+            s.hasErrors = false;
+        } else if (s.source === invalidSource) {
+            s.compiled = false;
+            s.hasErrors = true;
+            s.infoLog = invalidShaderInfoLog;
+        }
         return;
     }
 
@@ -916,6 +941,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         imageSize: number,
         offset: number
     ): void;
+    
     public compressedTexImage2D(
         target: number,
         level: number,
@@ -1270,6 +1296,12 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public createShader(type: number): WebGLShader | null {
+        switch (type) {
+            case this.FRAGMENT_SHADER:
+                return fragmentShader;
+            case this.VERTEX_SHADER:
+                return vertexShader;
+        }
         return null;
     }
 
@@ -1658,11 +1690,18 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public getShaderInfoLog(shader: WebGLShader | null): string | null {
-        return null;
+        const s = shader as IWebGLShaderMock;
+        return s.infoLog;
     }
 
     public getShaderParameter(shader: WebGLShader | null, pname: number): any {
-        return this.returnPlaceholder;
+        const s = shader as IWebGLShaderMock;
+        switch (pname) {
+            case this.COMPILE_STATUS:
+                return s.compiled;
+            default:
+                return 'unknown';
+        }
     }
 
     public getShaderPrecisionFormat(
@@ -1963,7 +2002,8 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public shaderSource(shader: WebGLShader | null, source: string): void {
-        return;
+        const s = shader as IWebGLShaderMock;
+        s.source = source;
     }
 
     public stencilFunc(func: number, ref: number, mask: number): void {
