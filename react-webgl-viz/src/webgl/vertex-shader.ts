@@ -7,7 +7,7 @@ class VertexShader extends Shader {
     }
 
     protected createHandle(): Handle {
-        const {gl} = this;
+        const { gl } = this;
         return gl.createShader(gl.VERTEX_SHADER);
     }
 }

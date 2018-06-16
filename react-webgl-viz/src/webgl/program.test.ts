@@ -1,15 +1,8 @@
-import {
-    fs,
-    vs
-} from '../../test/webgl2-canvas-mock/fixture';
+import { fs, vs } from '../../test/webgl2-canvas-mock/fixture';
 
-import {
-    HTMLCanvasElementMock,
-    WebGL2RenderingContextMock
-} from '../../test/webgl2-canvas-mock';
+import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
 
 import Program, { IProgramProps } from './program';
-
 
 // const BUFFER_DATA = new Float32Array([0, 1, 0, -1, -1, 0, 1, -1, 0]);
 
@@ -34,22 +27,23 @@ describe('WebGL#Program construct/delete', () => {
             const invalidProps = undefined;
             // @ts-ignore
             const prog = new Program(gl, invalidProps);
-        }).toThrow(/.*shader*/);
+        }).toThrow(/.*Invalid*/);
 
         expect(() => {
             const invalidProps = null;
             // @ts-ignore
             const prog = new Program(gl, invalidProps);
-        }).toThrow(/.*shader*/);
+        }).toThrow(/.*Invalid*/);
         expect(() => {
             const invalidOpts = {};
             // @ts-ignore
             const prog = new Program(gl, invalidOpts as IProgramProps);
-        }).toThrow(/.*shader*/);
+        }).toThrow(/.*Invalid*/);
     });
 
     it('program construction successful', () => {
-        const program = new Program(gl, props);
-        expect(program).toBeInstanceOf(Program);
+        const testProgram = new Program(gl, props);
+        expect(testProgram).toBeInstanceOf(Program);
+        expect(testProgram.program).toBeDefined();
     });
 });

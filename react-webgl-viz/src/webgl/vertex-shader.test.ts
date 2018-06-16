@@ -1,13 +1,6 @@
-import {
-    invalidSource,
-    vertexShader,
-    vs
-} from '../../test/webgl2-canvas-mock/fixture';
-import {
-    HTMLCanvasElementMock,
-    WebGL2RenderingContextMock
-} from '../../test/webgl2-canvas-mock';
-import {default as VertexShader } from './vertex-shader';
+import { invalidSource, vertexShader, vs } from '../../test/webgl2-canvas-mock/fixture';
+import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
+import { default as VertexShader } from './vertex-shader';
 
 const canvas = new HTMLCanvasElementMock(100, 100);
 const gl = new WebGL2RenderingContextMock(canvas);
@@ -25,5 +18,5 @@ describe('WebGL#VertexShader', () => {
         expect(() => {
             new VertexShader(gl, invalidSource);
         }).toThrow(/.*GLSL*/);
-    })
+    });
 });

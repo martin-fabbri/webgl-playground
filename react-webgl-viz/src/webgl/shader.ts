@@ -1,4 +1,4 @@
-import { default as Resource, Handle} from './resource';
+import { default as Resource, Handle } from './resource';
 
 export enum ShaderType {
     FragmentShader = 'fragment-shader',
@@ -6,18 +6,23 @@ export enum ShaderType {
 }
 
 abstract class Shader extends Resource {
-
-    protected constructor(gl: WebGL2RenderingContext,
-                          protected readonly type: ShaderType,
-                          source: string) {
+    protected constructor(
+        gl: WebGL2RenderingContext,
+        protected readonly type: ShaderType,
+        source: string
+    ) {
         super(gl);
         this.compile(source);
+    }
+
+    get shader() {
+        return this.handle as WebGLShader;
     }
 
     protected abstract createHandle(): Handle;
 
     private compile(source: string) {
-        const {gl, handle} = this;
+        const { gl, handle } = this;
         const shader = handle as WebGLShader;
         gl.shaderSource(shader, source);
         gl.compileShader(shader);

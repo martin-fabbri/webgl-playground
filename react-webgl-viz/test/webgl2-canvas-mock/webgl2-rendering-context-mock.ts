@@ -1,21 +1,36 @@
 import {
     fragmentShader,
     fs,
-    invalidShaderInfoLog, invalidSource,
+    invalidShaderInfoLog,
+    invalidSource,
+    program,
     vertexShader,
     vs
 } from './fixture';
 
 export interface IWebGLShaderMock extends WebGLShader {
-    type: number,
-    compiled: boolean,
-    hasErrors: boolean,
-    source: string | undefined,
-    infoLog: string | null
+    type: number;
+    compiled: boolean;
+    hasErrors: boolean;
+    source: string | undefined;
+    infoLog: string | null;
+}
+
+export interface IProgramParametersMock {
+    [index: number]: any;
+}
+
+export interface IActiveAttribMock {
+    [index: number]: WebGLActiveInfo;
+}
+
+export interface IWebGLProgramMock extends WebGLProgram {
+    parameters: IProgramParametersMock;
+    activeAttrib: IActiveAttribMock;
 }
 
 class WebGL2RenderingContextMock implements WebGL2RenderingContext {
-    public readonly ACTIVE_ATTRIBUTES: number;
+    public readonly ACTIVE_ATTRIBUTES: number = 0x8B89;
     public readonly ACTIVE_TEXTURE: number;
     public readonly ACTIVE_UNIFORMS: number;
     public readonly ACTIVE_UNIFORM_BLOCKS: number;
@@ -72,7 +87,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     public readonly COLOR_CLEAR_VALUE: number;
     public readonly COLOR_WRITEMASK: number;
     public readonly COMPARE_REF_TO_TEXTURE: number;
-    public readonly COMPILE_STATUS: number = 0x8B81;
+    public readonly COMPILE_STATUS: number = 0x8b81;
     public readonly COMPRESSED_TEXTURE_FORMATS: number;
     public readonly CONDITION_SATISFIED: number;
     public readonly CONSTANT_ALPHA: number;
@@ -158,7 +173,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     public readonly FLOAT_VEC2: number;
     public readonly FLOAT_VEC3: number;
     public readonly FLOAT_VEC4: number;
-    public readonly FRAGMENT_SHADER: number = 0x8B30;
+    public readonly FRAGMENT_SHADER: number = 0x8b30;
     public readonly FRAGMENT_SHADER_DERIVATIVE_HINT: number;
     public readonly FRAMEBUFFER: number;
     public readonly FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE: number;
@@ -578,7 +593,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     public readonly VERTEX_ATTRIB_ARRAY_SIZE: number;
     public readonly VERTEX_ATTRIB_ARRAY_STRIDE: number;
     public readonly VERTEX_ATTRIB_ARRAY_TYPE: number;
-    public readonly VERTEX_SHADER: number = 0x8B31;
+    public readonly VERTEX_SHADER: number = 0x8b31;
     public readonly VIEWPORT: number;
     public readonly WAIT_FAILED: number;
     public readonly ZERO: number;
@@ -920,7 +935,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
 
     public compileShader(shader: WebGLShader | null): void {
         const s = shader as IWebGLShaderMock;
-        if ((s.source === vs) || (s.source === fs)) {
+        if (s.source === vs || s.source === fs) {
             s.compiled = true;
             s.hasErrors = false;
         } else if (s.source === invalidSource) {
@@ -941,7 +956,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         imageSize: number,
         offset: number
     ): void;
-    
+
     public compressedTexImage2D(
         target: number,
         level: number,
@@ -1280,7 +1295,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public createProgram(): WebGLProgram | null {
-        return null;
+        return program;
     }
 
     public createQuery(): WebGLQuery | null {
@@ -1497,7 +1512,8 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public getActiveAttrib(program: WebGLProgram | null, index: number): WebGLActiveInfo | null {
-        return null;
+        const progMock = program as IWebGLProgramMock;
+        return progMock.activeAttrib[index];
     }
 
     public getActiveUniform(program: WebGLProgram | null, index: number): WebGLActiveInfo | null {
@@ -1528,7 +1544,14 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public getAttribLocation(program: WebGLProgram | null, name: string): number {
-        return 0;
+        const mockProg = program as IWebGLProgramMock;
+        let attrLoc = 0;
+        Object.keys(mockProg.activeAttrib).map((key, i) => {
+           if (mockProg.activeAttrib[key].name === name) {
+               attrLoc = i;
+           }
+        });
+        return attrLoc;
     }
 
     public getBufferParameter(target: number, pname: number): any {
@@ -1670,7 +1693,8 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public getProgramParameter(program: WebGLProgram | null, pname: number): any {
-        return this.returnPlaceholder;
+        const mockProgram = program as IWebGLProgramMock;
+        return mockProgram.parameters[pname];
     }
 
     public getQuery(target: number, pname: number): WebGLQuery | null {
