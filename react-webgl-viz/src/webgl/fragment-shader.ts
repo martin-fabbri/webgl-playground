@@ -1,5 +1,5 @@
-import { default as Shader, ShaderType } from './shader';
 import { Handle } from './resource';
+import { default as Shader, ShaderType } from './shader';
 
 class FragmentShader extends Shader {
     constructor(gl: WebGL2RenderingContext, source: string) {
