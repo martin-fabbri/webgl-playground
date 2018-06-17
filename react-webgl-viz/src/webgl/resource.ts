@@ -21,12 +21,14 @@ abstract class Resource {
 
     // todo: refine type of handle
     public readonly handle: Handle;
+    protected readonly gl: WebGL2RenderingContext;
 
-    protected constructor(protected gl: WebGL2RenderingContext, props: IResourceProps = {}) {
-        if (!gl) {
+    protected constructor(glCtx: WebGL2RenderingContext | null, props: IResourceProps = {}) {
+        if (!glCtx) {
             throw new Error('Invalid WebGLRenderingContext.');
         }
 
+        this.gl = glCtx;
         const { id, handle } = props;
 
         this.id = id || uid(this.constructor.name);

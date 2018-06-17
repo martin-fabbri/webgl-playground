@@ -1,5 +1,5 @@
-import { invalidSource, fragmentShader, fs } from '../../test/webgl2-canvas-mock/fixture';
 import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
+import { fragmentShader, fs, invalidSource } from '../../test/webgl2-canvas-mock/fixture';
 import { default as FragmentShader } from './fragment-shader';
 
 const canvas = new HTMLCanvasElementMock(100, 100);
@@ -16,6 +16,7 @@ describe('WebGL#FragmentShader', () => {
 
     it('should thrown an error when source is invalid', () => {
         expect(() => {
+            // tslint:disable-next-line
             new FragmentShader(gl, invalidSource);
         }).toThrow(/.*GLSL*/);
     });

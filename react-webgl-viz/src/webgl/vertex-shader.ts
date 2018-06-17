@@ -1,9 +1,12 @@
-import { default as Shader, ShaderType } from './shader';
+import { ShaderType } from './constants';
 import { Handle } from './resource';
+import { default as Shader } from './shader';
+
+const type = ShaderType.VertexShader;
 
 class VertexShader extends Shader {
     constructor(gl: WebGL2RenderingContext, source: string) {
-        super(gl, ShaderType.VertexShader, source);
+        super(gl, type, source);
     }
 
     protected createHandle(): Handle {

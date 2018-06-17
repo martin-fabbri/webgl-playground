@@ -1,5 +1,5 @@
-import { invalidSource, vertexShader, vs } from '../../test/webgl2-canvas-mock/fixture';
 import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
+import { invalidSource, vertexShader, vs } from '../../test/webgl2-canvas-mock/fixture';
 import { default as VertexShader } from './vertex-shader';
 
 const canvas = new HTMLCanvasElementMock(100, 100);
@@ -16,6 +16,7 @@ describe('WebGL#VertexShader', () => {
 
     it('should thrown an error when source is invalid', () => {
         expect(() => {
+            // tslint:disable-next-line
             new VertexShader(gl, invalidSource);
         }).toThrow(/.*GLSL*/);
     });

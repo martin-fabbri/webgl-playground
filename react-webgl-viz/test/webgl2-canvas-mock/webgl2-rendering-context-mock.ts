@@ -24,15 +24,20 @@ export interface IActiveAttribMock {
     [index: number]: WebGLActiveInfo;
 }
 
+export interface IActiveUniforMock {
+    [index: number]: WebGLActiveInfo | null;
+}
+
 export interface IWebGLProgramMock extends WebGLProgram {
     parameters: IProgramParametersMock;
     activeAttrib: IActiveAttribMock;
+    activeUniform: IActiveUniforMock;
 }
 
 class WebGL2RenderingContextMock implements WebGL2RenderingContext {
-    public readonly ACTIVE_ATTRIBUTES: number = 0x8B89;
+    public readonly ACTIVE_ATTRIBUTES: number = 0x8b89;
     public readonly ACTIVE_TEXTURE: number;
-    public readonly ACTIVE_UNIFORMS: number;
+    public readonly ACTIVE_UNIFORMS: number = 0x8b86;
     public readonly ACTIVE_UNIFORM_BLOCKS: number;
     public readonly ALIASED_LINE_WIDTH_RANGE: number;
     public readonly ALIASED_POINT_SIZE_RANGE: number;
@@ -608,7 +613,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return;
     }
 
-    public attachShader(program: WebGLProgram | null, shader: WebGLShader | null): void {
+    public attachShader(prog: WebGLProgram | null, shader: WebGLShader | null): void {
         return;
     }
 
@@ -620,7 +625,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return;
     }
 
-    public bindAttribLocation(program: WebGLProgram | null, index: number, name: string): void {
+    public bindAttribLocation(prog: WebGLProgram | null, index: number, name: string): void {
         return;
     }
 
@@ -1344,7 +1349,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return;
     }
 
-    public deleteProgram(program: WebGLProgram | null): void {
+    public deleteProgram(prog: WebGLProgram | null): void {
         return;
     }
 
@@ -1392,7 +1397,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return;
     }
 
-    public detachShader(program: WebGLProgram | null, shader: WebGLShader | null): void {
+    public detachShader(prog: WebGLProgram | null, shader: WebGLShader | null): void {
         return;
     }
 
@@ -1511,45 +1516,43 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return;
     }
 
-    public getActiveAttrib(program: WebGLProgram | null, index: number): WebGLActiveInfo | null {
-        const progMock = program as IWebGLProgramMock;
+    public getActiveAttrib(prog: WebGLProgram | null, index: number): WebGLActiveInfo | null {
+        const progMock = prog as IWebGLProgramMock;
         return progMock.activeAttrib[index];
     }
 
-    public getActiveUniform(program: WebGLProgram | null, index: number): WebGLActiveInfo | null {
-        return null;
+    public getActiveUniform(prog: WebGLProgram | null, index: number): WebGLActiveInfo | null {
+        const progMock = prog as IWebGLProgramMock;
+        return progMock.activeUniform[index];
     }
 
-    public getActiveUniformBlockName(
-        program: WebGLProgram,
-        uniformBlockIndex: number
-    ): string | null {
+    public getActiveUniformBlockName(prog: WebGLProgram, uniformBlockIndex: number): string | null {
         return null;
     }
 
     public getActiveUniformBlockParameter(
-        program: WebGLProgram,
+        prog: WebGLProgram,
         uniformBlockIndex: number,
         pname: number
     ): any {
         return {};
     }
 
-    public getActiveUniforms(program: WebGLProgram, uniformIndices: number[], pname: number): any {
+    public getActiveUniforms(prog: WebGLProgram, uniformIndices: number[], pname: number): any {
         return this.returnPlaceholder;
     }
 
-    public getAttachedShaders(program: WebGLProgram | null): WebGLShader[] | null {
+    public getAttachedShaders(prog: WebGLProgram | null): WebGLShader[] | null {
         return null;
     }
 
-    public getAttribLocation(program: WebGLProgram | null, name: string): number {
-        const mockProg = program as IWebGLProgramMock;
+    public getAttribLocation(prog: WebGLProgram | null, name: string): number {
+        const mockProg = prog as IWebGLProgramMock;
         let attrLoc = 0;
         Object.keys(mockProg.activeAttrib).map((key, i) => {
-           if (mockProg.activeAttrib[key].name === name) {
-               attrLoc = i;
-           }
+            if (mockProg.activeAttrib[key].name === name) {
+                attrLoc = i;
+            }
         });
         return attrLoc;
     }
@@ -1664,7 +1667,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return undefined;
     }
 
-    public getFragDataLocation(program: WebGLProgram, name: string): number {
+    public getFragDataLocation(prog: WebGLProgram, name: string): number {
         return 0;
     }
 
@@ -1688,12 +1691,12 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return this.returnPlaceholder;
     }
 
-    public getProgramInfoLog(program: WebGLProgram | null): string | null {
+    public getProgramInfoLog(prog: WebGLProgram | null): string | null {
         return null;
     }
 
-    public getProgramParameter(program: WebGLProgram | null, pname: number): any {
-        const mockProgram = program as IWebGLProgramMock;
+    public getProgramParameter(prog: WebGLProgram | null, pname: number): any {
+        const mockProgram = prog as IWebGLProgramMock;
         return mockProgram.parameters[pname];
     }
 
@@ -1751,27 +1754,24 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return this.returnPlaceholder;
     }
 
-    public getTransformFeedbackVarying(
-        program: WebGLProgram,
-        index: number
-    ): WebGLActiveInfo | null {
+    public getTransformFeedbackVarying(prog: WebGLProgram, index: number): WebGLActiveInfo | null {
         return null;
     }
 
-    public getUniform(program: WebGLProgram | null, location: WebGLUniformLocation | null): any {
+    public getUniform(prog: WebGLProgram | null, location: WebGLUniformLocation | null): any {
         return this.returnPlaceholder;
     }
 
-    public getUniformBlockIndex(program: WebGLProgram, uniformBlockName: string): number {
+    public getUniformBlockIndex(prog: WebGLProgram, uniformBlockName: string): number {
         return 0;
     }
 
-    public getUniformIndices(program: WebGLProgram, uniformNames: string[]): number[] | null {
+    public getUniformIndices(prog: WebGLProgram, uniformNames: string[]): number[] | null {
         return null;
     }
 
     public getUniformLocation(
-        program: WebGLProgram | null,
+        prog: WebGLProgram | null,
         name: string
     ): WebGLUniformLocation | null {
         return null;
@@ -1820,7 +1820,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return false;
     }
 
-    public isProgram(program: WebGLProgram | null): boolean {
+    public isProgram(prog: WebGLProgram | null): boolean {
         return false;
     }
 
@@ -1860,7 +1860,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return;
     }
 
-    public linkProgram(program: WebGLProgram | null): void {
+    public linkProgram(prog: WebGLProgram | null): void {
         return;
     }
 
@@ -2464,7 +2464,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public transformFeedbackVaryings(
-        program: WebGLProgram,
+        prog: WebGLProgram,
         varyings: string[],
         bufferMode: number
     ): void {
@@ -2739,7 +2739,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
     }
 
     public uniformBlockBinding(
-        program: WebGLProgram,
+        prog: WebGLProgram,
         uniformBlockIndex: number,
         uniformBlockBinding: number
     ): void {
@@ -2875,11 +2875,11 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         return;
     }
 
-    public useProgram(program: WebGLProgram | null): void {
+    public useProgram(prog: WebGLProgram | null): void {
         return;
     }
 
-    public validateProgram(program: WebGLProgram | null): void {
+    public validateProgram(prog: WebGLProgram | null): void {
         return;
     }
 

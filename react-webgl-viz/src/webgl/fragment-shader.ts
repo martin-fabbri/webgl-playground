@@ -1,9 +1,12 @@
+import { ShaderType } from './constants';
 import { Handle } from './resource';
-import { default as Shader, ShaderType } from './shader';
+import { default as Shader } from './shader';
+
+const type = ShaderType.FragmentShader;
 
 class FragmentShader extends Shader {
     constructor(gl: WebGL2RenderingContext, source: string) {
-        super(gl, ShaderType.FragmentShader, source);
+        super(gl, type, source);
     }
 
     protected createHandle(): Handle {

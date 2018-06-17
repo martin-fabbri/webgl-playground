@@ -1,17 +1,16 @@
+import { ShaderType } from './constants';
 import { default as Resource, Handle } from './resource';
 
-export enum ShaderType {
-    FragmentShader = 'fragment-shader',
-    VertexShader = 'vertex-shader'
-}
-
 abstract class Shader extends Resource {
+    protected type: ShaderType;
+
     protected constructor(
         gl: WebGL2RenderingContext,
-        protected readonly type: ShaderType,
+        type: ShaderType = ShaderType.VertexShader,
         source: string
     ) {
         super(gl);
+        this.type = type;
         this.compile(source);
     }
 
@@ -33,6 +32,7 @@ abstract class Shader extends Resource {
         // https://gamedev.stackexchange.com/questions/30429/how-to-detect-glsl-warnings
         const compileStatus = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
         if (!compileStatus) {
+            // tslint:disable-next-line
             console.error(
                 'An error occurred compiling the fragment shader.',
                 gl.getShaderInfoLog(shader)
