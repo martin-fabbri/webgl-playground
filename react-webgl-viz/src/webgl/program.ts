@@ -127,7 +127,7 @@ export default class Program extends Resource {
                 const uniformName = info.name;
                 // const uniformLocation = gl.getUniformLocation(program, uniformName);
                 gl.getUniformLocation(program, uniformName);
-                // uniformSetters[uniformName] = gl.uniform1fv(uniformLocation);
+                // uniformSetters[uniformName] = getUniformSetter(gl, location, info, parsedName.isArray);
             }
         }
     }
