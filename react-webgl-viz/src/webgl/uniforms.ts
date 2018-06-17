@@ -27,11 +27,18 @@ const GL_UNSIGNED_INT_VEC2 = 0x8dc6;
 const GL_UNSIGNED_INT_VEC3 = 0x8dc7;
 const GL_UNSIGNED_INT_VEC4 = 0x8dc8;
 
+// todo: rename x variables
+// tslint:disable-next-line:variable-name
 const GL_FLOAT_MAT2x3 = 0x8b65;
+// tslint:disable-next-line:variable-name
 const GL_FLOAT_MAT2x4 = 0x8b66;
+// tslint:disable-next-line:variable-name
 const GL_FLOAT_MAT3x2 = 0x8b67;
+// tslint:disable-next-line:variable-name
 const GL_FLOAT_MAT3x4 = 0x8b68;
+// tslint:disable-next-line:variable-name
 const GL_FLOAT_MAT4x2 = 0x8b69;
+// tslint:disable-next-line:variable-name
 const GL_FLOAT_MAT4x3 = 0x8b6a;
 
 const GL_SAMPLER_3D = 0x8b5f;
@@ -47,6 +54,11 @@ const GL_UNSIGNED_INT_SAMPLER_2D = 0x8dd2;
 const GL_UNSIGNED_INT_SAMPLER_3D = 0x8dd3;
 const GL_UNSIGNED_INT_SAMPLER_CUBE = 0x8dd4;
 const GL_UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8dd7;
+
+// Pre-allocated typed arrays for temporary conversion
+const FLOAT_ARRAY = {};
+const INT_ARRAY = {};
+const UINT_ARRAY = {};
 
 const uniformSetters = {
     // WebGL1
@@ -181,21 +193,19 @@ const uniformSetters = {
     ) => gl.uniform1i(location, value)
 };
 
-type SourceType = Float32Array | Int32Array | Uint32Array;
-
-function toTypedArray(value: any, uniformLength: number, type: SourceType, cache: boolean) {
+function toTypedArray<T>(value: any, uniformLength: number, cache: any) {
     const length = value.length;
     if (length % uniformLength) {
         // tslint:disable-next-line
         console.warn(`Uniform size should be multiples of ${uniformLength}`, value);
     }
 
-    if (value instanceof type) {
+    if (value instanceof T) {
         return value;
     }
     let result = cache[length];
     if (!result) {
-        result = new Type(length);
+        result = new T(length);
         cache[length] = result;
     }
     for (let i = 0; i < length; i++) {
@@ -204,16 +214,16 @@ function toTypedArray(value: any, uniformLength: number, type: SourceType, cache
     return result;
 }
 
-function toFloatArray(value, uniformLength) {
-    return toTypedArray(value, uniformLength, Float32Array, FLOAT_ARRAY);
+function toFloatArray(value: any, uniformLength: number): Float32Array  {
+    return toTypedArray<Float32Array>(value, uniformLength, FLOAT_ARRAY);
 }
 
-function toIntArray(value, uniformLength) {
-    return toTypedArray(value, uniformLength, Int32Array, INT_ARRAY);
+function toIntArray(value: any, uniformLength: number) {
+    return toTypedArray<Int32Array>(value, uniformLength, INT_ARRAY);
 }
 
-function toUIntArray(value, uniformLength) {
-    return toTypedArray(value, uniformLength, Uint32Array, UINT_ARRAY);
+function toUIntArray(value: any, uniformLength: number) {
+    return toTypedArray<Uint32Array>(value, uniformLength, UINT_ARRAY);
 }
 
 export function getUniformSetter(
