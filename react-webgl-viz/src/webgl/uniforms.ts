@@ -60,7 +60,7 @@ const FLOAT_ARRAY = {};
 const INT_ARRAY = {};
 const UINT_ARRAY = {};
 
-type ArrayType = Float32Array | Int32Array | Uint32Array | number[];
+export type UniformArrayType = Float32Array | Int32Array | Uint32Array | ArrayLike<number>;
 
 const uniformSetters = {
     // WebGL1
@@ -70,31 +70,31 @@ const uniformSetters = {
     [GL_FLOAT_VEC2]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniform2fv(location, toFloatArray(value, 2)),
 
     [GL_FLOAT_VEC3]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniform3fv(location, toFloatArray(value, 3)),
 
     [GL_FLOAT_VEC4]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniform4fv(location, toFloatArray(value, 4)),
 
     [GL_INT]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: number) =>
         gl.uniform1i(location, value),
 
-    [GL_INT_VEC2]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: ArrayType) =>
+    [GL_INT_VEC2]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: UniformArrayType) =>
         gl.uniform2iv(location, toIntArray(value, 2)),
 
-    [GL_INT_VEC3]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: ArrayType) =>
+    [GL_INT_VEC3]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: UniformArrayType) =>
         gl.uniform3iv(location, toIntArray(value, 3)),
 
-    [GL_INT_VEC4]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: ArrayType) =>
+    [GL_INT_VEC4]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: UniformArrayType) =>
         gl.uniform4iv(location, toIntArray(value, 4)),
 
     [GL_BOOL]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: number) =>
@@ -103,38 +103,38 @@ const uniformSetters = {
     [GL_BOOL_VEC2]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniform2iv(location, toIntArray(value, 2)),
 
     [GL_BOOL_VEC3]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniform3iv(location, toIntArray(value, 3)),
 
     [GL_BOOL_VEC4]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniform4iv(location, toIntArray(value, 4)),
 
     // uniformMatrix(false): don't transpose the matrix
     [GL_FLOAT_MAT2]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix2fv(location, false, toFloatArray(value, 4)),
 
     [GL_FLOAT_MAT3]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix3fv(location, false, toFloatArray(value, 9)),
 
     [GL_FLOAT_MAT4]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix4fv(location, false, toFloatArray(value, 16)),
 
     [GL_SAMPLER_2D]: (
@@ -178,37 +178,37 @@ const uniformSetters = {
     [GL_FLOAT_MAT2x3]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix2x3fv(location, false, toFloatArray(value, 6)),
 
     [GL_FLOAT_MAT2x4]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix2x4fv(location, false, toFloatArray(value, 8)),
 
     [GL_FLOAT_MAT3x2]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix3x2fv(location, false, toFloatArray(value, 6)),
 
     [GL_FLOAT_MAT3x4]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix3x4fv(location, false, toFloatArray(value, 12)),
 
     [GL_FLOAT_MAT4x2]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix4x2fv(location, false, toFloatArray(value, 8)),
 
     [GL_FLOAT_MAT4x3]: (
         gl: WebGL2RenderingContext,
         location: WebGLUniformLocation,
-        value: ArrayType
+        value: UniformArrayType
     ) => gl.uniformMatrix4x3fv(location, false, toFloatArray(value, 12)),
 
     [GL_SAMPLER_3D]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: number) =>
@@ -288,7 +288,7 @@ const uniformSetters = {
 };
 
 function toTypedArray<T>(
-    value: ArrayType,
+    value: UniformArrayType,
     uniformLength: number,
     t: new (l: number) => T,
     cache: any
@@ -313,15 +313,15 @@ function toTypedArray<T>(
     return result;
 }
 
-export function toFloatArray(value: ArrayType, uniformLength: number): Float32Array {
+export function toFloatArray(value: UniformArrayType, uniformLength: number): Float32Array {
     return toTypedArray<Float32Array>(value, uniformLength, Float32Array, FLOAT_ARRAY);
 }
 
-export function toIntArray(value: ArrayType, uniformLength: number): Int32Array {
+export function toIntArray(value: UniformArrayType, uniformLength: number): Int32Array {
     return toTypedArray<Int32Array>(value, uniformLength, Int32Array, INT_ARRAY);
 }
 
-export function toUIntArray(value: ArrayType, uniformLength: number): Uint32Array {
+export function toUIntArray(value: UniformArrayType, uniformLength: number): Uint32Array {
     return toTypedArray<Uint32Array>(value, uniformLength, Uint32Array, UINT_ARRAY);
 }
 

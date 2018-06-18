@@ -1,3 +1,5 @@
+import { UniformArrayType } from '../../src/webgl/uniforms';
+
 import {
     fragmentShader,
     fs,
@@ -24,8 +26,15 @@ export interface IActiveAttribMock {
     [index: number]: WebGLActiveInfo;
 }
 
+export interface IWebGLUniformLocationMock extends WebGLUniformLocation {
+    readonly name: string;
+    readonly size: number;
+    readonly type: number;
+    data?: UniformArrayType;
+}
+
 export interface IActiveUniforMock {
-    [index: number]: WebGLActiveInfo | null;
+    [index: number]: IWebGLUniformLocationMock | null;
 }
 
 export interface IWebGLProgramMock extends WebGLProgram {
@@ -1774,7 +1783,15 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         prog: WebGLProgram | null,
         name: string
     ): WebGLUniformLocation | null {
-        return null;
+        if (!prog) {
+            return null;
+        }
+        const mockProg = prog as IWebGLProgramMock;
+        const keys = Object.keys(mockProg.activeUniform).filter((k, i) => {
+            return (mockProg.activeUniform[k].name === name);
+        });
+
+        return mockProg.activeUniform[keys[0]];
     }
 
     public getVertexAttrib(index: number, pname: number): any {
@@ -2852,7 +2869,8 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         srcOffset?: number,
         srcLength?: number
     ): void {
-        return;
+        const mockLocation = location as IWebGLUniformLocationMock;
+        mockLocation.data = data;
     }
 
     public uniformMatrix4x2fv(

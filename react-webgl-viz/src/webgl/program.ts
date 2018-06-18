@@ -1,6 +1,7 @@
 import FragmentShader from './fragment-shader';
 import { default as Resource, Handle, IResourceProps } from './resource';
 import VertexShader from './vertex-shader';
+import { getUniformSetter, UniformArrayType } from './uniforms';
 
 export interface IProgramProps extends IResourceProps {
     fs: string;
@@ -18,7 +19,7 @@ export interface IAttributeToLocationMap {
 
 export default class Program extends Resource {
     private readonly attributeToLocationMap: IAttributeToLocationMap = {};
-    // private readonly uniformSetters: IAttributeToLocationMap = {};
+    private readonly uniformSetters: IAttributeToLocationMap = {};
 
     constructor(gl: WebGL2RenderingContext | null, props: IProgramProps) {
         super(gl);
@@ -27,6 +28,23 @@ export default class Program extends Resource {
 
     get program() {
         return this.handle as WebGLProgram;
+    }
+
+    public use() {
+        const {gl, program} = this;
+        gl.useProgram(program);
+        return this;
+    }
+
+    /**
+     * Sets named uniforms from a map, ignoring names.
+     * For each key, value of the object passed in it executes setUniform(key, value).
+     * program.setUniforms(object);
+     * @param uniforms (object) - An object with key value pairs matching a uniform name and its value respectively.
+     * @param samplers // todo: do we need samplers???
+     */
+    public setUniforms(uniforms: {[index: string]: UniformArrayType}, samplers = {}) {
+
     }
 
     public setBuffers(buffers: IProgramBuffers) {
@@ -90,44 +108,17 @@ export default class Program extends Resource {
         }
     }
 
-    // // query uniform locations and build name to setter map.
-    // _queryUniformLocations() {
-    //     const {gl} = this;
-    //     this._uniformSetters = {};
-    //     this._uniformCount = this.getUniformCount();
-    //     for (let i = 0; i < this._uniformCount; i++) {
-    //         const info = this.getUniformInfo(i);
-    //         const parsedName = parseUniformName(info.name);
-    //         const location = this.getUniformLocation(parsedName.name);
-    //         this._uniformSetters[parsedName.name] =
-    //             getUniformSetter(gl, location, info, parsedName.isArray);
-    //     }
-    //     this._textureIndexCounter = 0;
-    // }
-    //
-    // this._getParameter(GL.ACTIVE_UNIFORMS);
-    //
-    //   _getParameter(pname) {
-    //     return this.gl.getProgramParameter(this.handle, pname);
-    //   }
-    //
-    //
-    // getUniformInfo(index) {
-    //     return this.gl.getActiveUniform(this.handle, index);
-    // }
-    // return this.gl.getUniformLocation(this.handle, name);
-
     private buildUniformLocations() {
-        // const {gl, program, uniformSetters} = this;
-        const { gl, program } = this;
+        const {gl, program, uniformSetters} = this;
         const uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
         for (let i = 0; i < uniformCount; i++) {
             const info = gl.getActiveUniform(program, i);
             if (info) {
                 const uniformName = info.name;
-                // const uniformLocation = gl.getUniformLocation(program, uniformName);
-                gl.getUniformLocation(program, uniformName);
-                // uniformSetters[uniformName] = getUniformSetter(gl, location, info, parsedName.isArray);
+                const uniformLocation = gl.getUniformLocation(program, uniformName);
+                if (uniformLocation) {
+                    uniformSetters[uniformName] = getUniformSetter(gl, uniformLocation, info);
+                }
             }
         }
     }

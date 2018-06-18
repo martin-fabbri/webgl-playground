@@ -1,8 +1,9 @@
-import { getUniformSetter, toFloatArray, toIntArray, toUIntArray } from './uniforms';
 import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
 import { fs, vs } from '../../test/webgl2-canvas-mock/fixture';
-import { IProgramProps } from './program';
-import Program from './program';
+
+import { default as Program, IProgramProps } from './program';
+import { getUniformSetter, toFloatArray, toIntArray, toUIntArray } from './uniforms';
+import { IWebGLUniformLocationMock } from '../../test/webgl2-canvas-mock/webgl2-rendering-context-mock';
 
 // const MATRIX_2 = [1, 0, 0, 1];
 //
@@ -95,14 +96,17 @@ describe('WebGL#Uniforms#toUIntArray', () => {
 describe('WebGL#Uniforms#getUniformSetter', () => {
     it('returns uniform setter', () => {
         const testProgram = new Program(gl, props);
-        const location = gl.getUniformLocation(testProgram, 'uMVMatrix');
+        const location = gl.getUniformLocation(testProgram.program, 'uMVMatrix') as IWebGLUniformLocationMock;
         const info: WebGLActiveInfo = {
             name: 'uMVMatrix',
             size: 1,
-            type: 35676
+            type: 35676  // 0x8B5C
         };
         const setter = getUniformSetter(gl, location!, info);
         expect(setter).toBeDefined();
+        setter([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+        expect(location.data).toBeDefined();
+        expect(location.data).toBeInstanceOf(Float32Array);
     });
 });
 

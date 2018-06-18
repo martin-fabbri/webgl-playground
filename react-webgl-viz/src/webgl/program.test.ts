@@ -47,3 +47,11 @@ describe('WebGL#Program construct/delete', () => {
         expect(testProgram.program).toBeDefined();
     });
 });
+
+describe('WebGL#Program setUniforms', () => {
+    it('program construction successful', () => {
+        const testProgram = new Program(gl, props);
+        expect(testProgram).toBeInstanceOf(Program);
+        expect(testProgram.program).toBeDefined();
+    });
+});
