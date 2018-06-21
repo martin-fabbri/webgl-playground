@@ -60,7 +60,7 @@ const FLOAT_ARRAY = {};
 const INT_ARRAY = {};
 const UINT_ARRAY = {};
 
-export type UniformArrayType = Float32Array | Int32Array | Uint32Array | ArrayLike<number>;
+export type UniformArrayType = Float32Array | Int32Array | Uint32Array | ArrayLike<number> | number;
 
 const uniformSetters = {
     // WebGL1
@@ -293,6 +293,11 @@ function toTypedArray<T>(
     t: new (l: number) => T,
     cache: any
 ): T {
+    if (!Array.isArray(value)) {
+        const r = new t(1);
+        r[0] = value;
+        return r;
+    }
     const length = value.length;
     if (length % uniformLength) {
         // tslint:disable-next-line

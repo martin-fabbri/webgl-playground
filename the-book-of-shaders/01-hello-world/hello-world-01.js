@@ -149,4 +149,4 @@ var WebGL2HelloWorld;
     });
     gp.draw();
 })(WebGL2HelloWorld || (WebGL2HelloWorld = {}));
-//# sourceMappingURL=hello-world-01.js.map
+//# sourceMappingURL=texture-data-02.jss.map

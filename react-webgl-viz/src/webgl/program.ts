@@ -1,7 +1,9 @@
+import {default as VertexBuffer} from './buffer';
 import FragmentShader from './fragment-shader';
 import { default as Resource, Handle, IResourceProps } from './resource';
-import VertexShader from './vertex-shader';
 import { getUniformSetter, UniformArrayType } from './uniforms';
+import VertexArray from './vertex-array';
+import VertexShader from './vertex-shader';
 
 export interface IProgramProps extends IResourceProps {
     fs: string;
@@ -10,16 +12,25 @@ export interface IProgramProps extends IResourceProps {
 }
 
 export interface IProgramBuffers {
-    [index: string]: any;
+    [index: string]: VertexBuffer;
 }
 
 export interface IAttributeToLocationMap {
-    [index: string]: any;
+    [index: string]: number;
+}
+
+export interface IUniformToSetterMap {
+    [index: string]: (value: UniformArrayType) => void;
 }
 
 export default class Program extends Resource {
     private readonly attributeToLocationMap: IAttributeToLocationMap = {};
-    private readonly uniformSetters: IAttributeToLocationMap = {};
+    private readonly uniformSetters: IUniformToSetterMap = {};
+
+    get vertexArray() {
+        const {gl} = this;
+        return VertexArray.getInstance(gl);
+    }
 
     constructor(gl: WebGL2RenderingContext | null, props: IProgramProps) {
         super(gl);
@@ -40,14 +51,25 @@ export default class Program extends Resource {
      * Sets named uniforms from a map, ignoring names.
      * For each key, value of the object passed in it executes setUniform(key, value).
      * program.setUniforms(object);
-     * @param uniforms (object) - An object with key value pairs matching a uniform name and its value respectively.
-     * @param samplers // todo: do we need samplers???
+     * @param uniforms An object with key value pairs matching a uniform name and its value respectively.
      */
-    public setUniforms(uniforms: {[index: string]: UniformArrayType}, samplers = {}) {
+    public setUniforms(uniforms: {[index: string]: UniformArrayType}) {
+        const {uniformSetters} = this;
 
+        Object.keys(uniformSetters).map((k) => {
+            uniformSetters[k](uniforms[k]);
+        });
+
+        return this;
     }
 
     public setBuffers(buffers: IProgramBuffers) {
+        const {attributeToLocationMap, vertexArray} = this;
+
+        Object.keys(attributeToLocationMap).map((k) => {
+            vertexArray.setBuffer(attributeToLocationMap[k], buffers[k]);
+        });
+
         return this;
     }
 

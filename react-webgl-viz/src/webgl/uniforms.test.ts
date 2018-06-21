@@ -1,9 +1,9 @@
 import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
 import { fs, vs } from '../../test/webgl2-canvas-mock/fixture';
-
+import { IWebGLUniformLocationMock } from '../../test/webgl2-canvas-mock/webgl2-rendering-context-mock';
 import { default as Program, IProgramProps } from './program';
 import { getUniformSetter, toFloatArray, toIntArray, toUIntArray } from './uniforms';
-import { IWebGLUniformLocationMock } from '../../test/webgl2-canvas-mock/webgl2-rendering-context-mock';
+
 
 // const MATRIX_2 = [1, 0, 0, 1];
 //
@@ -109,15 +109,3 @@ describe('WebGL#Uniforms#getUniformSetter', () => {
         expect(location.data).toBeInstanceOf(Float32Array);
     });
 });
-
-// export function getUniformSetter(
-//     gl: WebGL2RenderingContext,
-//     location: WebGLUniformLocation,
-//     info: WebGLActiveInfo
-// ) {
-//     const setter = uniformSetters[info.type];
-//     if (!setter) {
-//         throw new Error(`Unknown GLSL uniform type ${info.type}`);
-//     }
-//     return setter.bind(null, gl, location);
-// }
