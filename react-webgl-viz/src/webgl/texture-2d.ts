@@ -84,6 +84,13 @@ class Texture2d extends Resource {
         return this;
     }
 
+    public magnification() {
+        const {gl} = this;
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        return this;
+    }
+
     public clamp() {
         const {gl} = this;
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);

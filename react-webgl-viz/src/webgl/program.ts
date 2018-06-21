@@ -26,6 +26,8 @@ export interface IUniformToSetterMap {
 export default class Program extends Resource {
     private readonly attributeToLocationMap: IAttributeToLocationMap = {};
     private readonly uniformSetters: IUniformToSetterMap = {};
+    private readonly viewport = new Float32Array(2);
+    private clearColor = 0xffffffff;
 
     get vertexArray() {
         const {gl} = this;
@@ -75,6 +77,32 @@ export default class Program extends Resource {
 
     public delete() {
         super.delete();
+    }
+
+    public setViewport(canvasWidth: number, canvasHeight: number) {
+        const {gl} = this;
+        gl.viewport(0, 0, canvasWidth, canvasHeight);
+        // cache for speed later
+        this.viewport[0] = canvasWidth;
+        this.viewport[1] = canvasHeight;
+        return this;
+    }
+
+    public setClearColor(color: number) {
+        this.clearColor = color;
+        return this;
+    }
+
+    public clear() {
+        const {gl} = this;
+
+        const c = this.clearColor;
+        // note the alpha is always 1.0. This may change in the future, >>> operator needed to avoid sign ext
+        // tslint:disable-next-line:no-bitwise
+        gl.clearColor((c & 0xff) / 255, ((c & 0xff00) >> 8) / 255, ((c & 0xff0000) >> 16) / 255, ((c & 0xff000000) >>> 24) / 255);
+        gl.enable(gl.DEPTH_TEST);
+        // tslint:disable-next-line:no-bitwise
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
 
     protected createHandle(): Handle {

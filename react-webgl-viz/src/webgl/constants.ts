@@ -3,6 +3,13 @@ export enum ShaderType {
     VertexShader = 'vertex-shader'
 }
 
+export enum ScaleType {
+    Linear,
+    Log,
+    Biexponential,
+    Glog
+}
+
 /* tslint:disable:object-literal-sort-keys */
 export const GL = {
     // Data types
