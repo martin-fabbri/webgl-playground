@@ -314,7 +314,7 @@ class Model {
             gl,{ data: trianglePts, size: 2, type: gl.FLOAT }
         );
 
-        const histogram = new Float32Array(mock2DHistogram64);
+        const histogram = new Float32Array(mock2DHistogram64.reverse());
 
         // throw in smoothing
         const copy = new Float32Array(histogram);
@@ -323,7 +323,7 @@ class Model {
 
         const projMatrix = Matrix4.createViewportTransform({
             // tslint:disable-next-line
-            srcLeft: 0, srcRight: dim - 1, destLeft: -1, destRight: 1,
+            srcLeft: 0, srcRight: dim - 1, destLeft: 1, destRight: -1,
             srcBottom: 0, srcTop: dim - 1, destBottom: -1, destTop: 1,
             srcFront: 255, srcBack: 0, destFront: -1, destBack: 0
         });
