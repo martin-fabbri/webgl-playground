@@ -1,8 +1,7 @@
 // @ts-ignore
-import {Matrix4} from 'math.gl';
+import { Matrix4 } from 'math.gl';
 import * as React from 'react';
 import Model from './webgl/model';
-
 
 class App extends React.Component {
     private readonly canvasRef: React.RefObject<HTMLCanvasElement> = React.createRef();
@@ -29,7 +28,17 @@ class App extends React.Component {
 
         ctx!.translate(ctx!.canvas.width, 0);
         ctx!.scale(-1, 1);
-        ctx!.drawImage(webglCanvas, 0, webglHeight - vpHeight, vpWidth, vpHeight, 0, 0, vpWidth, vpHeight);
+        ctx!.drawImage(
+            webglCanvas,
+            0,
+            webglHeight - vpHeight,
+            vpWidth,
+            vpHeight,
+            0,
+            0,
+            vpWidth,
+            vpHeight
+        );
     }
 
     public render() {

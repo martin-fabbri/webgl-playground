@@ -4,7 +4,7 @@
  * Author: Chris Wolf
  */
 export class ShaderUtilMethods {
-   public static methods = `
+    public static methods = `
 
    /*
    * this is a simple lookup that returns the nearest index where the value
@@ -42,5 +42,4 @@ export class ShaderUtilMethods {
       return highIndex;
    }
 `;
-
 }

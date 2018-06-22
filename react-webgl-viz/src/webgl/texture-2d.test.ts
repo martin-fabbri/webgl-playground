@@ -11,4 +11,3 @@ describe('WebGL#Program contruct', () => {
         expect(testTexture2d).toBeInstanceOf(Texture2d);
     });
 });
-

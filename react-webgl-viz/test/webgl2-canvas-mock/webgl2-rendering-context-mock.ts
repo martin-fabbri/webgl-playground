@@ -1788,7 +1788,7 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         }
         const mockProg = prog as IWebGLProgramMock;
         const keys = Object.keys(mockProg.activeUniform).filter((k, i) => {
-            return (mockProg.activeUniform[k].name === name);
+            return mockProg.activeUniform[k].name === name;
         });
 
         return mockProg.activeUniform[keys[0]];

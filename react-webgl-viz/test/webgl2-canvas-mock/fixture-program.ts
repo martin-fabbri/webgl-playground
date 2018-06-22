@@ -104,77 +104,77 @@ export const program: IWebGLProgramMock = {
         1: {
             name: 'v2',
             size: 1,
-            type: 0x8B50 // FLOAT_VEC2
+            type: 0x8b50 // FLOAT_VEC2
         },
         2: {
             name: 'v3',
             size: 1,
-            type: 0x8B51 // FLOAT_VEC3
+            type: 0x8b51 // FLOAT_VEC3
         },
         3: {
             name: 'v4',
             size: 1,
-            type: 0x8B52 // FLOAT_VEC4
+            type: 0x8b52 // FLOAT_VEC4
         },
-        4 : {
+        4: {
             name: 'i',
             size: 1,
             type: 0x1404 // INT
         },
-        5 : {
+        5: {
             name: 'iv2',
             size: 1,
-            type: 0x8B53 // INT_VEC2
+            type: 0x8b53 // INT_VEC2
         },
-        6 : {
+        6: {
             name: 'iv3',
             size: 1,
-            type: 0x8B54 // INT_VEC3
+            type: 0x8b54 // INT_VEC3
         },
-        7 : {
+        7: {
             name: 'iv4',
             size: 1,
-            type: 0x8B55 // INT_VEC4
+            type: 0x8b55 // INT_VEC4
         },
-        8 : {
+        8: {
             name: 'b',
             size: 1,
-            type: 0x8B56 // BOOL
+            type: 0x8b56 // BOOL
         },
-        9 : {
+        9: {
             name: 'bv2',
             size: 1,
-            type: 0x8B57 // BOOL_VEC2
+            type: 0x8b57 // BOOL_VEC2
         },
-        10 : {
+        10: {
             name: 'bv3',
             size: 1,
-            type: 0x8B58 // BOOL_VEC3
+            type: 0x8b58 // BOOL_VEC3
         },
-        11 : {
+        11: {
             name: 'bv4',
             size: 1,
-            type: 0x8B59 // BOOL_VEC4
+            type: 0x8b59 // BOOL_VEC4
         },
-        12 : {
+        12: {
             name: 'm2',
             size: 1,
-            type: 0x8B5A // FLOAT_MAT2
+            type: 0x8b5a // FLOAT_MAT2
         },
-        13 : {
+        13: {
             name: 'm3',
             size: 1,
-            type: 0x8B5B // FLOAT_MAT3
+            type: 0x8b5b // FLOAT_MAT3
         },
-        14 : {
+        14: {
             name: 'm3',
             size: 1,
-            type: 0x8B5C // FLOAT_MAT4
+            type: 0x8b5c // FLOAT_MAT4
         },
-        15 : {
+        15: {
             name: 's2d',
             size: 1,
-            type: 0x8B5E // SAMPLER_2D
+            type: 0x8b5e // SAMPLER_2D
         }
     },
     parameters: {
@@ -228,4 +228,3 @@ export const program: IWebGLProgramMock = {
 //     v3: new Float32Array([1, 2, 3]), // FLOAT_VEC3  0x8B51
 //     v4: new Float32Array([1, 2, 3, 4]), // FLOAT_VEC4  0x8B52
 // };
-

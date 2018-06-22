@@ -1,8 +1,19 @@
 import { GL } from './constants';
 import { default as Resource, Handle } from './resource';
 
-export type BufferDataType = Int8Array | Int16Array | Int32Array | Uint8Array | Uint16Array | Uint32Array |
-    Uint8ClampedArray | Float32Array | Float64Array | DataView | ArrayBuffer | null;
+export type BufferDataType =
+    | Int8Array
+    | Int16Array
+    | Int32Array
+    | Uint8Array
+    | Uint16Array
+    | Uint32Array
+    | Uint8ClampedArray
+    | Float32Array
+    | Float64Array
+    | DataView
+    | ArrayBuffer
+    | null;
 
 export interface IBufferProps {
     data: BufferDataType;
@@ -56,19 +67,19 @@ class Buffer extends Resource {
             stride: props.stride || defaultProps.stride,
             type: props.type || defaultProps.type,
             usage: props.usage || defaultProps.usage
-        }
+        };
         this.initialize();
     }
 
     public bind(target: number = GL.ARRAY_BUFFER) {
-        const {buffer, gl} = this;
+        const { buffer, gl } = this;
         this.target = target;
         gl.bindBuffer(this.target, buffer);
         return this;
     }
 
     public unbind() {
-        const {gl, target} = this;
+        const { gl, target } = this;
         gl.bindBuffer(target, null);
         return this;
     }
@@ -78,13 +89,12 @@ class Buffer extends Resource {
     }
 
     private initialize() {
-        const {buffer, gl} = this;
-        const {data, usage} = this.props;
+        const { buffer, gl } = this;
+        const { data, usage } = this.props;
         this.gl.bindBuffer(gl.COPY_WRITE_BUFFER, buffer);
         this.gl.bufferData(gl.COPY_WRITE_BUFFER, data, usage);
         this.gl.bindBuffer(gl.COPY_WRITE_BUFFER, null);
     }
-
 }
 
 export default Buffer;

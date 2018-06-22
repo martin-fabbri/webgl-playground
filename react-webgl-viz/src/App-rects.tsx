@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {default as VertexBuffer} from './webgl/buffer'
+import { default as VertexBuffer } from './webgl/buffer';
 import Program from './webgl/program';
 
 const VERTEX_SHADER = `#version 300 es
@@ -52,17 +52,11 @@ function setRectangle(gl: any, x: any, y: any, width: any, height: any, program:
     const y1 = y;
     const y2 = y + height;
 
-    const positionBuffer = new VertexBuffer(gl, {data: new Float32Array([
-            x1, y1,
-            x2, y1,
-            x1, y2,
-            x1, y2,
-            x2, y1,
-            x2, y2,
-        ])});
+    const positionBuffer = new VertexBuffer(gl, {
+        data: new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2])
+    });
 
-    program.setBuffers({'a_position': positionBuffer})
-
+    program.setBuffers({ a_position: positionBuffer });
 }
 
 class App extends React.Component {
@@ -87,21 +81,26 @@ class App extends React.Component {
         gl!.clearColor(0, 0, 0, 0);
         gl!.clear(gl!.COLOR_BUFFER_BIT);
 
-        program
-            .use();
+        program.use();
 
         for (let ii = 0; ii < 50; ++ii) {
-            setRectangle(gl, randomInt(300), randomInt(300), randomInt(300), randomInt(300), program);
+            setRectangle(
+                gl,
+                randomInt(300),
+                randomInt(300),
+                randomInt(300),
+                randomInt(300),
+                program
+            );
 
             const colorUniform = new Float32Array([Math.random(), Math.random(), Math.random(), 1]);
 
             program.setUniforms({
-                'u_color': colorUniform,
-                'u_resolution': resolutionUniform
+                u_color: colorUniform,
+                u_resolution: resolutionUniform
             });
 
             gl!.drawArrays(gl!.TRIANGLES, 0, 6);
-
         }
 
         // tslint:disable-next-line

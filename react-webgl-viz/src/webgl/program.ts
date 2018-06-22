@@ -1,4 +1,4 @@
-import {default as VertexBuffer} from './buffer';
+import { default as VertexBuffer } from './buffer';
 import FragmentShader from './fragment-shader';
 import { default as Resource, Handle, IResourceProps } from './resource';
 import { getUniformSetter, UniformArrayType } from './uniforms';
@@ -30,7 +30,7 @@ export default class Program extends Resource {
     private clearColor = 0xffffffff;
 
     get vertexArray() {
-        const {gl} = this;
+        const { gl } = this;
         return VertexArray.getInstance(gl);
     }
 
@@ -44,7 +44,7 @@ export default class Program extends Resource {
     }
 
     public use() {
-        const {gl, program} = this;
+        const { gl, program } = this;
         gl.useProgram(program);
         return this;
     }
@@ -55,10 +55,10 @@ export default class Program extends Resource {
      * program.setUniforms(object);
      * @param uniforms An object with key value pairs matching a uniform name and its value respectively.
      */
-    public setUniforms(uniforms: {[index: string]: UniformArrayType}) {
-        const {uniformSetters} = this;
+    public setUniforms(uniforms: { [index: string]: UniformArrayType }) {
+        const { uniformSetters } = this;
 
-        Object.keys(uniformSetters).map((k) => {
+        Object.keys(uniformSetters).map(k => {
             uniformSetters[k](uniforms[k]);
         });
 
@@ -66,9 +66,9 @@ export default class Program extends Resource {
     }
 
     public setBuffers(buffers: IProgramBuffers) {
-        const {attributeToLocationMap, vertexArray} = this;
+        const { attributeToLocationMap, vertexArray } = this;
 
-        Object.keys(attributeToLocationMap).map((k) => {
+        Object.keys(attributeToLocationMap).map(k => {
             vertexArray.setBuffer(attributeToLocationMap[k], buffers[k]);
         });
 
@@ -80,7 +80,7 @@ export default class Program extends Resource {
     }
 
     public setViewport(canvasWidth: number, canvasHeight: number) {
-        const {gl} = this;
+        const { gl } = this;
         gl.viewport(0, 0, canvasWidth, canvasHeight);
         // cache for speed later
         this.viewport[0] = canvasWidth;
@@ -94,12 +94,17 @@ export default class Program extends Resource {
     }
 
     public clear() {
-        const {gl} = this;
+        const { gl } = this;
 
         const c = this.clearColor;
         // note the alpha is always 1.0. This may change in the future, >>> operator needed to avoid sign ext
         // tslint:disable-next-line:no-bitwise
-        gl.clearColor((c & 0xff) / 255, ((c & 0xff00) >> 8) / 255, ((c & 0xff0000) >> 16) / 255, ((c & 0xff000000) >>> 24) / 255);
+        gl.clearColor(
+            (c & 0xff) / 255,
+            ((c & 0xff00) >> 8) / 255,
+            ((c & 0xff0000) >> 16) / 255,
+            ((c & 0xff000000) >>> 24) / 255
+        );
         gl.enable(gl.DEPTH_TEST);
         // tslint:disable-next-line:no-bitwise
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -159,7 +164,7 @@ export default class Program extends Resource {
     }
 
     private buildUniformLocations() {
-        const {gl, program, uniformSetters} = this;
+        const { gl, program, uniformSetters } = this;
         const uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
         for (let i = 0; i < uniformCount; i++) {
             const info = gl.getActiveUniform(program, i);

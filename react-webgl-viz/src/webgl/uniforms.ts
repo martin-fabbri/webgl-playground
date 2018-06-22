@@ -88,14 +88,23 @@ const uniformSetters = {
     [GL_INT]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: number) =>
         gl.uniform1i(location, value),
 
-    [GL_INT_VEC2]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: UniformArrayType) =>
-        gl.uniform2iv(location, toIntArray(value, 2)),
+    [GL_INT_VEC2]: (
+        gl: WebGL2RenderingContext,
+        location: WebGLUniformLocation,
+        value: UniformArrayType
+    ) => gl.uniform2iv(location, toIntArray(value, 2)),
 
-    [GL_INT_VEC3]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: UniformArrayType) =>
-        gl.uniform3iv(location, toIntArray(value, 3)),
+    [GL_INT_VEC3]: (
+        gl: WebGL2RenderingContext,
+        location: WebGLUniformLocation,
+        value: UniformArrayType
+    ) => gl.uniform3iv(location, toIntArray(value, 3)),
 
-    [GL_INT_VEC4]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: UniformArrayType) =>
-        gl.uniform4iv(location, toIntArray(value, 4)),
+    [GL_INT_VEC4]: (
+        gl: WebGL2RenderingContext,
+        location: WebGLUniformLocation,
+        value: UniformArrayType
+    ) => gl.uniform4iv(location, toIntArray(value, 4)),
 
     [GL_BOOL]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: number) =>
         gl.uniform1i(location, value),
@@ -137,11 +146,8 @@ const uniformSetters = {
         value: UniformArrayType
     ) => gl.uniformMatrix4fv(location, false, toFloatArray(value, 16)),
 
-    [GL_SAMPLER_2D]: (
-        gl: WebGL2RenderingContext,
-        location: WebGLUniformLocation,
-        value: number
-    ) => gl.uniform1i(location, value),
+    [GL_SAMPLER_2D]: (gl: WebGL2RenderingContext, location: WebGLUniformLocation, value: number) =>
+        gl.uniform1i(location, value),
 
     [GL_SAMPLER_CUBE]: (
         gl: WebGL2RenderingContext,

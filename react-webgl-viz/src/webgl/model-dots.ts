@@ -73,7 +73,7 @@ const defaultModelProps: IDefaultModelProps = {
     transform: DataGenerator.createTransformMatrix(),
     xScale: ScaleType.Linear,
     yScale: ScaleType.Linear,
-    zIndex: 0,
+    zIndex: 0
 };
 
 export type ModelPropsWithDefaults = IModelProps & IDefaultModelProps;
@@ -103,22 +103,22 @@ class Model {
     }
 
     public draw() {
-        const {color, gl, pointSize, program, transform, xScale, yScale, zIndex} = this;
+        const { color, gl, pointSize, program, transform, xScale, yScale, zIndex } = this;
 
         const vertices = new Float32Array([0, 0, 132.0, 192, 194, 64, 66, 64, 32, 32, 128, 128]);
 
-        const verticesBuffer = new VertexBuffer(
-            gl,{ data: vertices, size: 2, type: gl.FLOAT }
-        );
+        const verticesBuffer = new VertexBuffer(gl, { data: vertices, size: 2, type: gl.FLOAT });
 
         // tslint:disable-next-line:no-bitwise
-        const uColor = [(color & 0xff) / 255,
+        const uColor = [
+            (color & 0xff) / 255,
             // tslint:disable-next-line:no-bitwise
             ((color >> 8) & 0xff) / 255,
             // tslint:disable-next-line:no-bitwise
             ((color >> 16) & 0xff) / 255,
             // tslint:disable-next-line:no-bitwise
-            ((color >> 24) & 0xff) / 255];
+            ((color >> 24) & 0xff) / 255
+        ];
 
         // tslint:disable-next-line
         console.log('transform.elements', transform.elements);
@@ -132,43 +132,75 @@ class Model {
         program
             .use()
             .setBuffers({
-                'a_position': verticesBuffer
+                a_position: verticesBuffer
             })
             .setUniforms({
-                'u_color': uColor,
-                'u_pointSize': pointSize,
-                'u_projMatrix': [0.007843137718737125, 0, 0, 0, 0, 0.007843137718737125, 0, 0, -0, -0, -0.003921568859368563, -0, -1, -1, 5.9138983488082886e-8, 1],
-                'u_xScale': xScale,
-                'u_yScale': yScale,
-                'u_zIndex': zIndex
+                u_color: uColor,
+                u_pointSize: pointSize,
+                u_projMatrix: [
+                    0.007843137718737125,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0.007843137718737125,
+                    0,
+                    0,
+                    -0,
+                    -0,
+                    -0.003921568859368563,
+                    -0,
+                    -1,
+                    -1,
+                    5.9138983488082886e-8,
+                    1
+                ],
+                u_xScale: xScale,
+                u_yScale: yScale,
+                u_zIndex: zIndex
             });
 
         gl.drawArrays(WebGL2RenderingContext.POINTS, 0, vertices.length / 2);
 
         // tslint:disable-next-line:no-bitwise
-        const uNewColor = [(0x560000ff & 0xff) / 255,
+        const uNewColor = [
+            (0x560000ff & 0xff) / 255,
             // tslint:disable-next-line:no-bitwise
             ((0x560000ff >> 8) & 0xff) / 255,
             // tslint:disable-next-line:no-bitwise
             ((0x560000ff >> 16) & 0xff) / 255,
             // tslint:disable-next-line:no-bitwise
-            ((0x560000ff >> 24) & 0xff) / 255];
+            ((0x560000ff >> 24) & 0xff) / 255
+        ];
 
-        program
-            .setUniforms({
-                'u_color': uNewColor,
-                'u_pointSize': 20,
-                'u_projMatrix': [0.007843137718737125, 0, 0, 0, 0, 0.007843137718737125, 0, 0, -0, -0, -0.003921568859368563, -0, -1, -1, 5.9138983488082886e-8, 1],
-                'u_xScale': xScale,
-                'u_yScale': yScale,
-                'u_zIndex': 1
-            });
-
+        program.setUniforms({
+            u_color: uNewColor,
+            u_pointSize: 20,
+            u_projMatrix: [
+                0.007843137718737125,
+                0,
+                0,
+                0,
+                0,
+                0.007843137718737125,
+                0,
+                0,
+                -0,
+                -0,
+                -0.003921568859368563,
+                -0,
+                -1,
+                -1,
+                5.9138983488082886e-8,
+                1
+            ],
+            u_xScale: xScale,
+            u_yScale: yScale,
+            u_zIndex: 1
+        });
 
         gl.drawArrays(WebGL2RenderingContext.POINTS, 0, vertices.length / 2);
-
     }
-
 }
 
 export default Model;

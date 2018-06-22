@@ -3,11 +3,11 @@
  * This class contains shader methods for scaling vertices. It is used in
  * all plot shaders to help convert linear coordinates to log/biexp/glog
  * TODO: change the lambda to be a uniform, also biexp table size may change or may uniform
- * 
+ *
  * Author: Chris Wolf
  */
 export class ShaderScaleMethods {
-   public static fields = `
+    public static fields = `
       const float LN10 = log(10.0);
       const float alpha = 0.0;
       const float lambda = 128000.0;
@@ -16,7 +16,7 @@ export class ShaderScaleMethods {
       uniform sampler2D u_lookupId;    // set to lookup biexp table texture
    `;
 
-   public static methods = `
+    public static methods = `
   
    // *******************************************************
    // returns the biexponential value given the linear value, using
