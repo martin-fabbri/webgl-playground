@@ -98,11 +98,15 @@ export default class Program extends Resource {
 
         const c = this.clearColor;
         // note the alpha is always 1.0. This may change in the future, >>> operator needed to avoid sign ext
-        // tslint:disable-next-line:no-bitwise
+
         gl.clearColor(
+            // tslint:disable-next-line:no-bitwise
             (c & 0xff) / 255,
+            // tslint:disable-next-line:no-bitwise
             ((c & 0xff00) >> 8) / 255,
+            // tslint:disable-next-line:no-bitwise
             ((c & 0xff0000) >> 16) / 255,
+            // tslint:disable-next-line:no-bitwise
             ((c & 0xff000000) >>> 24) / 255
         );
         gl.enable(gl.DEPTH_TEST);

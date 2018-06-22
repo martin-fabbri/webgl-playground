@@ -1,3 +1,4 @@
+/* tslint:disable */
 import { default as VertexBuffer } from './buffer';
 import { ScaleType } from './constants';
 import { Matrix4 } from './glplotlib/cuon-matrix';
@@ -204,3 +205,4 @@ class Model {
 }
 
 export default Model;
+/* tslint:enable */

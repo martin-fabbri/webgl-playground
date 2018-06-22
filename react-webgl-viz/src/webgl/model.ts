@@ -4344,14 +4344,15 @@ class Model {
         const sm = new GaussianSmoother();
         sm.smooth(histogram, copy, dim);
 
+        /* tslint:disable */
         const projMatrix = Matrix4.createViewportTransform({
             // tslint:disable-next-line
-            srcLeft: 0,
-            srcRight: dim - 1,
             destLeft: 1,
             destRight: -1,
             srcBottom: 0,
             srcTop: dim - 1,
+            srcLeft: 0,
+            srcRight: dim - 1,
             destBottom: -1,
             destTop: 1,
             srcFront: 255,
@@ -4359,6 +4360,7 @@ class Model {
             destFront: -1,
             destBack: 0
         });
+        /* tslint:enable */
 
         // tslint:disable-next-line
         console.log('projMatrix', projMatrix);
