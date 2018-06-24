@@ -112,7 +112,7 @@ class App extends React.Component {
         const texture2d = new Texture2d(gl!, {
             data,
             dataFormat: gl!.R8,
-            format: gl!.RED,
+            internalFormat: gl!.RED,
             height: 2,
             type: gl!.UNSIGNED_BYTE,
             width: 3
@@ -121,7 +121,7 @@ class App extends React.Component {
         texture2d
             .bind()
             .setPixeldStorei(gl!.UNPACK_ALIGNMENT, 1)
-            .setImageData()
+            .setData()
             .clamp();
 
         view.translate([3, 0, 0]);

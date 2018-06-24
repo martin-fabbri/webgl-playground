@@ -249,7 +249,7 @@ var /** holds major version number for IE or NaN for real browsers */
     uid               = ['0', '0', '0'];
 
 /**
- * IE 11 changed the format of the UserAgent string.
+ * IE 11 changed the internalFormat of the UserAgent string.
  * See http://msdn.microsoft.com/en-us/library/ms537503.aspx
  */
 msie = int((/msie (\d+)/.exec(lowercase(navigator.userAgent)) || [])[1]);
@@ -3043,7 +3043,7 @@ forEach({
  *
  * @param obj
  * @returns {string} hash string such that the same input will have the same hash string.
- *         The resulting string key is in 'type:hashKey' format.
+ *         The resulting string key is in 'type:hashKey' internalFormat.
  */
 function hashKey(obj) {
   var objType = typeof obj,
@@ -6614,7 +6614,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
      * call this the boundDirective.
      *
      * @param {string} name name of the directive to look up.
-     * @param {string} location The directive must be found in specific format.
+     * @param {string} location The directive must be found in specific internalFormat.
      *   String containing any of theses characters:
      *
      *   * `E`: element name
@@ -6974,7 +6974,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
 var PREFIX_REGEXP = /^(x[\:\-_]|data[\:\-_])/i;
 /**
- * Converts all accepted directives format into proper directive name.
+ * Converts all accepted directives internalFormat into proper directive name.
  * All of these will become 'myDirective':
  *   my:Directive
  *   my-directive
@@ -8769,7 +8769,7 @@ function $IntervalProvider() {
       *         .directive('myCurrentTime', function($interval, dateFilter) {
       *           // return the directive link function. (compile function not needed)
       *           return function(scope, element, attrs) {
-      *             var format,  // date format
+      *             var format,  internalFormat
       *             stopTime; // so that we can cancel the time updates
       *
       *             // used to update the UI
@@ -12530,7 +12530,7 @@ function $RootScopeProvider(){
        * Listens on events of a given type. See {@link ng.$rootScope.Scope#$emit $emit} for
        * discussion of event life cycle.
        *
-       * The event listener function format is: `function(event, args...)`. The `event` object
+       * The event listener function internalFormat is: `function(event, args...)`. The `event` object
        * passed into the listener has the following attributes:
        *
        *   - `targetScope` - `{Scope}`: the scope on which the event was `$emit`-ed or
@@ -14723,7 +14723,7 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
       formatedText += whole.charAt(i);
     }
 
-    // format fraction part.
+    // internalFormat fraction part.
     while(fraction.length < fractionSize) {
       fraction += '0';
     }

@@ -1,48 +1,57 @@
 import { GL } from './constants';
-import { default as Resource, Handle, IResourceProps } from './resource';
-
-export interface ITexture extends IResourceProps {
-    target: number; // i.e. gl.TEXTURE_2D
-}
+import { default as Resource, Handle } from './resource';
 
 export interface ITextureProps {
-    data?: any;
-    format?: number;
+    data: TextureDataType;
+    internalFormat: number;
     type?: number;
     border?: number;
     recreate?: boolean;
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
     dataFormat?: any;
     offset?: number;
     level?: number;
 }
 
 export interface IDefaultProps {
-    format: number;
     type: number;
     border: number;
     recreate: boolean;
-    width: number;
-    height: number;
     dataFormat: number;
     offset: number;
     level: number;
 }
 
-type TexturePropsWithDefaults = ITextureProps & IDefaultProps;
+export type TexturePropsWithDefaults = ITextureProps & IDefaultProps;
+
+export type TextureDataType = Float32Array | Int32Array | Uint8Array | Uint32Array;
+
+// legal/common combinations for internalFormat, dataFormat and type
+export const TEXTURE_FORMATS = {
+    [GL.RGB]: {dataFormat: GL.RGB, type: GL.UNSIGNED_BYTE},
+    [GL.RGBA]: {dataFormat: GL.RGBA, type: GL.UNSIGNED_BYTE},
+    [GL.ALPHA]: {dataFormat: GL.ALPHA, type: GL.UNSIGNED_BYTE},
+    [GL.LUMINANCE]: {dataFormat: GL.LUMINANCE, type: GL.UNSIGNED_BYTE},
+    [GL.LUMINANCE_ALPHA]: {dataFormat: GL.LUMINANCE_ALPHA, type: GL.UNSIGNED_BYTE},
+    [GL.R8]: {dataFormat: GL.RED, type: GL.UNSIGNED_BYTE},
+    [GL.R32F]: {dataFormat: GL.RED, type: GL.FLOAT}
+};
 
 class Texture2d extends Resource {
     protected readonly props: ITextureProps;
-    private textureUnit = 0;
+    private unit = 0;
 
-    constructor(gl: WebGL2RenderingContext, props: ITextureProps = {}) {
+    constructor(gl: WebGL2RenderingContext, props: ITextureProps) {
         super(gl);
+
+        const commonCombination = TEXTURE_FORMATS[props.dataFormat];
+
         this.props = {
-            border: props.border || 0,
             data: props.data,
-            dataFormat: props.dataFormat || gl.R8,
-            format: props.format || GL.RGBA,
+            border: props.border || 0,
+            dataFormat: props.dataFormat,
+            internalFormat: props.internalFormat || GL.RGBA,
             height: props.height || 1,
             level: props.level || 0,
             offset: props.offset || 0,
@@ -56,26 +65,36 @@ class Texture2d extends Resource {
         return this.handle as WebGLTexture;
     }
 
-    public bind(textureUnit = this.textureUnit) {
+    get textureProps() {
+        return this.props;
+    }
+
+    get textureUnit() {
+        return this.unit;
+    }
+
+    public bind(unit = this.unit) {
         const { gl, texture } = this;
-        this.textureUnit = textureUnit;
-        gl.activeTexture(gl.TEXTURE0 + textureUnit);
+        this.unit = unit;
+        gl.activeTexture(gl.TEXTURE0 + unit);
         gl.bindTexture(gl.TEXTURE_2D, texture);
         return this;
     }
 
     public unbind() {
         const { gl } = this;
-        gl.activeTexture(gl.TEXTURE0 + this.textureUnit);
+        gl.activeTexture(gl.TEXTURE0 + this.unit);
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
-    public setImageData() {
-        const { border, dataFormat, format, height, level, type, width, data } = this
+    public setData(data: TextureDataType) {
+        const { border, dataFormat, internalFormat, height, level, type, width} = this
             .props as TexturePropsWithDefaults;
         const { gl } = this;
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.texImage2D(gl.TEXTURE_2D, level, dataFormat, width, height, border, format, type, data);
+
+        // void gl.texImage2D(target, level, internalformat, width, height, border, format, type, ImageData source);
+        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, dataFormat, type, data);
         return this;
     }
 

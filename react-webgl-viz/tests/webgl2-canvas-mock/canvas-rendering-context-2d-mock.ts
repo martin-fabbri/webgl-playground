@@ -2,27 +2,27 @@ import { HTMLCanvasElementMock } from './index';
 
 class CanvasRenderingContext2DMock implements CanvasRenderingContext2D {
     public readonly canvas: HTMLCanvasElement;
-    public fillStyle: string | CanvasGradient | CanvasPattern;
-    public font: string;
-    public globalAlpha: number;
-    public globalCompositeOperation: string;
-    public imageSmoothingEnabled: boolean;
-    public lineCap: string;
-    public lineDashOffset: number;
-    public lineJoin: string;
-    public lineWidth: number;
-    public miterLimit: number;
-    public mozImageSmoothingEnabled: boolean;
-    public msFillRule: CanvasFillRule;
-    public oImageSmoothingEnabled: boolean;
-    public shadowBlur: number;
-    public shadowColor: string;
-    public shadowOffsetX: number;
-    public shadowOffsetY: number;
-    public strokeStyle: string | CanvasGradient | CanvasPattern;
-    public textAlign: string;
-    public textBaseline: string;
-    public webkitImageSmoothingEnabled: boolean;
+    public fillStyle: string | CanvasGradient | CanvasPattern = '';
+    public font: string = '';
+    public globalAlpha: number = 0;
+    public globalCompositeOperation: string = '';
+    public imageSmoothingEnabled: boolean = true;
+    public lineCap: string = '';
+    public lineDashOffset: number = 0;
+    public lineJoin: string = '';
+    public lineWidth: number = 0;
+    public miterLimit: number = 0;
+    public mozImageSmoothingEnabled: boolean = false;
+    public msFillRule: CanvasFillRule = 'nonzero';
+    public oImageSmoothingEnabled: boolean = false;
+    public shadowBlur: number = 0;
+    public shadowColor: string = '';
+    public shadowOffsetX: number = 0;
+    public shadowOffsetY: number = 0;
+    public strokeStyle: string | CanvasGradient | CanvasPattern = '';
+    public textAlign: string = '';
+    public textBaseline: string = '';
+    public webkitImageSmoothingEnabled: boolean = false;
 
     constructor(canvas: HTMLCanvasElementMock) {
         this.canvas = canvas as HTMLCanvasElement;

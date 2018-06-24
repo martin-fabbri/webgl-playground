@@ -4368,36 +4368,31 @@ class Model {
         const levels = Algorithms.generateLevels(histogram, LevelScale.ProbabilityDensity, 10);
 
         const histogramTexture = new Texture2d(gl, {
-            data: histogram,
             dataFormat: gl.R32F,
-            format: gl.RED,
+            internalFormat: gl.RED,
             height: dim,
             type: gl.FLOAT,
             width: dim
         });
 
-        const histogramTextureId = 1;
         histogramTexture
-            .bind(histogramTextureId)
+            .bind(1)
             .magnification()
-            .setImageData();
+            .setData(histogram);
 
         const densityLevelsTexture = new Texture2d(gl, {
-            data: levels,
             dataFormat: gl.R32F,
-            format: gl.RED,
+            internalFormat: gl.RED,
             height: 1,
             type: gl.FLOAT,
             width: levels.length
         });
 
-        const densityLevelsTextureId = 2;
         densityLevelsTexture
-            .bind(densityLevelsTextureId)
+            .bind(2)
             .magnification()
-            .setImageData();
+            .setData(levels);
 
-        const colorTableTextureId = 0;
         const colorTableInfo = ColorTable.getAllColorTables();
 
         const rgbTable = colorTableInfo.colorTables;
@@ -4405,18 +4400,17 @@ class Model {
         const tableLen = colorTableInfo.tableLength / 3;
 
         const colorTableTexture = new Texture2d(gl, {
-            data: rgbTable,
             dataFormat: gl.RGB,
-            format: gl.RGB,
+            internalFormat: gl.RGB,
             height: numTables,
             type: gl.UNSIGNED_BYTE,
             width: tableLen
         });
 
         colorTableTexture
-            .bind(colorTableTextureId)
+            .bind(0)
             .magnification()
-            .setImageData();
+            .setData(rgbTable);
 
         // tslint:disable-next-line
         console.log('transform.elements', transform.elements);
@@ -4425,19 +4419,16 @@ class Model {
             .use()
             .setViewport(gl.canvas.width, gl.canvas.height)
             .setClearColor(0xffffffff)
-            .clear();
-
-        program
-            .use()
+            .clear()
             .setBuffers({
                 a_position: verticesBuffer
             })
             .setUniforms({
                 u_activeColorTable: 0,
-                u_colorTableLookupId: colorTableTextureId,
-                u_densityLevelLookupId: densityLevelsTextureId,
+                u_colorTableLookupId: colorTableTexture.textureUnit,
+                u_densityLevelLookupId: densityLevelsTexture.textureUnit,
                 u_dimension: dim,
-                u_histogramLookupId: histogramTextureId,
+                u_histogramLookupId: histogramTexture.textureUnit,
                 u_invProjMatrix: [
                     31.499998092651367,
                     -0,

@@ -967,7 +967,7 @@ function isArraylike( obj ) {
 
 // All jQuery objects should point back to these
 rootjQuery = jQuery(document);
-// String to Object options format cache
+// String to Object options internalFormat cache
 var optionsCache = {};
 
 // Convert String-formatted options into Object-formatted ones and store in cache
