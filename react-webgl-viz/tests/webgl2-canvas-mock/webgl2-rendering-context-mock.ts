@@ -1,4 +1,4 @@
-import { UniformArrayType } from '../../src/webgl/uniforms';
+import { UniformArrayType } from './../../src/clientProcess/reactComponents/flowjo-vis/webgl/uniforms';
 
 import {
     fragmentShader,
@@ -1559,7 +1559,8 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         const mockProg = prog as IWebGLProgramMock;
         let attrLoc = 0;
         Object.keys(mockProg.activeAttrib).map((key, i) => {
-            if (mockProg.activeAttrib[key].name === name) {
+            // @ts-ignore
+          if (mockProg.activeAttrib[key].name === name) {
                 attrLoc = i;
             }
         });
@@ -1788,10 +1789,12 @@ class WebGL2RenderingContextMock implements WebGL2RenderingContext {
         }
         const mockProg = prog as IWebGLProgramMock;
         const keys = Object.keys(mockProg.activeUniform).filter((k, i) => {
-            return mockProg.activeUniform[k].name === name;
+            // @ts-ignore
+          return mockProg.activeUniform[k].name === name;
         });
 
-        return mockProg.activeUniform[keys[0]];
+        // @ts-ignore
+      return mockProg.activeUniform[keys[0]];
     }
 
     public getVertexAttrib(index: number, pname: number): any {

@@ -6,7 +6,7 @@
 import { Algorithms } from './algorithms';
 import { ColorTable } from './colorTable';
 import { Matrix4 } from './cuon-matrix';
-import { ScaleType } from './../constants';
+import { ScaleType } from '../constants';
 
 export interface IZoomTransform {
     x: number;

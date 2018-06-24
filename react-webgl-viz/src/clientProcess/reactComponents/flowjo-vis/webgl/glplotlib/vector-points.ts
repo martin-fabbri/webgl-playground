@@ -91,10 +91,10 @@ export class Point implements IPoint {
 }
 
 export class TransitionPoint extends Point {
-    sx: number;
-    sy: number;
-    tx: number;
-    ty: number;
+    sx: number = 0;
+    sy: number = 0;
+    tx: number = 0;
+    ty: number = 0;
 
     constructor(public x: number = 0, public y: number = 0) {
         super(x, y);

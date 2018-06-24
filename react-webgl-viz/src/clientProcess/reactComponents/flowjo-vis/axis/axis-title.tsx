@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import styled, { theme } from '../theme/index';
+import styled, { theme } from './../theme/index';
 
-import { Orientation, TitlePosition } from '../utils/axis';
+import { Orientation, TitlePosition } from './../utils/axis';
 
 interface IProps {
     className?: string;

@@ -1,4 +1,4 @@
-import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
+import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from './../../../../../tests/webgl2-canvas-mock';
 
 import { default as Texture2d } from './texture-2d';
 

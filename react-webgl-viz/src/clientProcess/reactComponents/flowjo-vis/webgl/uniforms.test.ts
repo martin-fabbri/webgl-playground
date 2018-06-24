@@ -1,6 +1,6 @@
-import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
-import { fs, vs } from '../../test/webgl2-canvas-mock/fixture';
-import { IWebGLUniformLocationMock } from '../../test/webgl2-canvas-mock/webgl2-rendering-context-mock';
+import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from './../../../../../tests/webgl2-canvas-mock';
+import { fs, vs } from './../../../../../tests/webgl2-canvas-mock/fixture';
+import { IWebGLUniformLocationMock } from './../../../../../tests/webgl2-canvas-mock/webgl2-rendering-context-mock';
 import { default as Program, IProgramProps } from './program';
 import { getUniformSetter, toFloatArray, toIntArray, toUIntArray } from './uniforms';
 

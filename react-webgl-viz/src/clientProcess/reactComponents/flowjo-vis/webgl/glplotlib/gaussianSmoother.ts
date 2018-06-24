@@ -15,7 +15,7 @@
 
 export class GaussianSmoother {
     // the values of the kernel
-    private _gaussianCoefficients: Float32Array;
+    private _gaussianCoefficients: Float32Array | undefined;
     private static DefaultSmoothing: number = 1.0;
     private _smoothing: number = GaussianSmoother.DefaultSmoothing;
 
@@ -36,7 +36,7 @@ export class GaussianSmoother {
      */
     constructor(
         smoothing: number = GaussianSmoother.DefaultSmoothing,
-        kernelSize: number = GaussianSmoother.DefaultKernelSize
+        kernelSize: number = GaussianSmoother.DefaultKernelSize,
     ) {
         this.setSmoothing(smoothing);
         this.setKernelSize(kernelSize);
@@ -141,7 +141,7 @@ export class GaussianSmoother {
     private createKernel() {
         this._gaussianCoefficients = GaussianSmoother.generate1DGaussianCoefficients(
             this.getKernelSize(),
-            this.getSmoothing()
+            this.getSmoothing(),
         );
         GaussianSmoother.normalize(this._gaussianCoefficients);
     }
@@ -172,7 +172,7 @@ export class GaussianSmoother {
     coefficients(): Float32Array {
         return GaussianSmoother.generate1DGaussianCoefficients(
             this.getKernelSize(),
-            this.getSmoothing()
+            this.getSmoothing(),
         );
     }
 
@@ -182,7 +182,7 @@ export class GaussianSmoother {
     coefficientsNormalized(): Float32Array {
         let coeff = GaussianSmoother.generate1DGaussianCoefficients(
             this.getKernelSize(),
-            this.getSmoothing()
+            this.getSmoothing(),
         );
         GaussianSmoother.normalize(coeff);
         return coeff;
@@ -194,7 +194,7 @@ export class GaussianSmoother {
     coefficients2D(): Float32Array {
         return GaussianSmoother.generate2DGaussianCoefficients(
             this.getKernelSize(),
-            this.getSmoothing()
+            this.getSmoothing(),
         );
     }
 
@@ -236,7 +236,7 @@ export class GaussianSmoother {
         // to generate 2D coefficients, just use the 1D and multiply the matrices
         let coeff1D: Float32Array = GaussianSmoother.generate1DGaussianCoefficients(
             kernelSize,
-            sigma
+            sigma,
         );
 
         // iterate thru the row and multiply by the column
@@ -257,14 +257,14 @@ export class GaussianSmoother {
      */
     static checkArrays(
         sourceData: Float32Array | Uint32Array | Uint16Array,
-        destData: Float32Array
+        destData: Float32Array,
     ) {
         if (sourceData == null || destData == null) {
-            throw 'Smoother: Arrays cannot be null:';
+            throw "Smoother: Arrays cannot be null:";
         }
 
         if (sourceData.length !== destData.length) {
-            throw 'Smoother: Arrays not the same length: ';
+            throw "Smoother: Arrays not the same length: ";
         }
     }
 
@@ -278,7 +278,7 @@ export class GaussianSmoother {
         src: Float32Array | Uint32Array | Uint16Array,
         dest: Float32Array,
         rowWidth: number,
-        coefficients: Float32Array
+        coefficients: Float32Array,
     ) {
         let kernelSize = coefficients.length;
         let halfKernel = (kernelSize / 2) | 0;
@@ -312,7 +312,7 @@ export class GaussianSmoother {
         src: Float32Array | Uint32Array | Uint16Array,
         dest: Float32Array,
         rowWidth: number,
-        coefficients: Float32Array
+        coefficients: Float32Array,
     ) {
         let kernelSize = coefficients.length;
         let halfKernel = (kernelSize / 2) | 0;
@@ -345,7 +345,7 @@ export class GaussianSmoother {
         src: Float32Array | Uint32Array | Uint16Array,
         dest: Float32Array,
         rowWidth: number,
-        coefficients: Float32Array
+        coefficients: Float32Array,
     ) {
         let kernelSize = coefficients.length;
         let halfKernel = (kernelSize / 2) | 0;
@@ -385,7 +385,7 @@ export class GaussianSmoother {
         src: Float32Array | Uint32Array | Uint16Array,
         dest: Float32Array,
         rowWidth: number,
-        coefficients: Float32Array
+        coefficients: Float32Array,
     ) {
         let kernelSize = coefficients.length;
         let halfKernel = (kernelSize / 2) | 0;
@@ -425,7 +425,7 @@ export class GaussianSmoother {
         src: Float32Array | Uint32Array | Uint16Array,
         dest: Float32Array,
         rowWidth: number,
-        coefficients: Float32Array
+        coefficients: Float32Array,
     ) {
         let kernelSize = coefficients.length;
         let halfKernel = (kernelSize / 2) | 0;
@@ -466,7 +466,7 @@ export class GaussianSmoother {
         src: Float32Array | Uint32Array | Uint16Array,
         dest: Float32Array,
         rowWidth: number,
-        coefficients: Float32Array
+        coefficients: Float32Array,
     ) {
         let kernelSize = coefficients.length;
         let halfKernel = (kernelSize / 2) | 0;
@@ -508,7 +508,7 @@ export class GaussianSmoother {
         src: T,
         dest: Float32Array,
         rowWidth: number,
-        smoothEdges: boolean = true
+        smoothEdges: boolean = true,
     ) {
         GaussianSmoother.checkArrays(src, dest);
 
@@ -522,29 +522,37 @@ export class GaussianSmoother {
         let scratch = numRows === 1 ? dest : new Float32Array(dest.length);
 
         // horizontal convolve to scratch array
-        GaussianSmoother.convolveHorz(src, scratch, rowWidth, this._gaussianCoefficients);
+        // @ts-ignore
+      GaussianSmoother.convolveHorz(src, scratch, rowWidth, this._gaussianCoefficients);
 
         if (smoothEdges) {
-            GaussianSmoother.convolveLeftHorz(src, scratch, rowWidth, this._gaussianCoefficients);
-            GaussianSmoother.convolveRightHorz(src, scratch, rowWidth, this._gaussianCoefficients);
+            // @ts-ignore
+          GaussianSmoother.convolveLeftHorz(src, scratch, rowWidth, this._gaussianCoefficients);
+            // @ts-ignore
+          GaussianSmoother.convolveRightHorz(src, scratch, rowWidth, this._gaussianCoefficients);
         }
 
         // for 2D vertical convolve to final array, if there is more than 1 row
         if (numRows > 1) {
-            GaussianSmoother.convolveVert(scratch, dest, rowWidth, this._gaussianCoefficients);
+            // @ts-ignore
+          GaussianSmoother.convolveVert(scratch, dest, rowWidth, this._gaussianCoefficients);
 
             if (smoothEdges) {
-                GaussianSmoother.convolveTopVert(
+
+              GaussianSmoother.convolveTopVert(
                     scratch,
                     dest,
                     rowWidth,
-                    this._gaussianCoefficients
+                    // @ts-ignore
+                    this._gaussianCoefficients,
                 );
-                GaussianSmoother.convolveBottomVert(
+
+              GaussianSmoother.convolveBottomVert(
                     scratch,
                     dest,
                     rowWidth,
-                    this._gaussianCoefficients
+                    // @ts-ignore
+                    this._gaussianCoefficients,
                 );
             }
         }
@@ -553,14 +561,14 @@ export class GaussianSmoother {
     }
 
     static outputHistogram(histogram: Float32Array | Uint32Array | Uint16Array) {
-        console.log('BEGIN');
-        let s = '';
+        console.log("BEGIN");
+        let s = "";
         for (let row = 0; row < 64; row++) {
             for (let col = 0; col < 64; col++) {
-                s += histogram[row * 64 + col] + ',';
+                s += histogram[row * 64 + col] + ",";
             }
             console.log(s);
-            s = '';
+            s = "";
         }
     }
 }

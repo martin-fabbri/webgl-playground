@@ -3,9 +3,9 @@ import { Matrix4 } from 'math.gl';
 
 import * as React from 'react';
 
-import { default as VertexBuffer } from './webgl/buffer';
-import Program from './webgl/program';
-import Texture2d from './webgl/texture-2d';
+import { default as VertexBuffer } from './clientProcess/reactComponents/flowjo-vis/webgl/buffer';
+import Program from './clientProcess/reactComponents/flowjo-vis/webgl/program';
+import Texture2d from './clientProcess/reactComponents/flowjo-vis/webgl/texture-2d';
 
 const VERTEX_SHADER = `#version 300 es
 in vec3 positions;

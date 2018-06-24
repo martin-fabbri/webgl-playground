@@ -4,10 +4,10 @@ import AxisLine from './axis-line';
 import AxisTicks from './axis-ticks';
 import AxisTitle from './axis-title';
 
-import styled from '../theme/index';
+import styled from './../theme/index';
 
-import { Orientation, ticksTotalFromSize, TitlePosition } from '../utils/axis';
-import { ScaleTypes } from '../utils/scales';
+import { Orientation, ticksTotalFromSize, TitlePosition } from './../utils/axis';
+import { ScaleTypes } from './../utils/scales';
 
 export interface IProps {
     className?: string;

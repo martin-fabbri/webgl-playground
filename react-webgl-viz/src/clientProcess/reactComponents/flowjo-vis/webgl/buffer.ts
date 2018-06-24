@@ -47,7 +47,7 @@ const defaultProps: IDefaultBufferProps = {
 
 class Buffer extends Resource {
     private props: BufferPropsWithDefaults;
-    private target: number;
+    private target: number = 0;
 
     get buffer() {
         return this.handle as WebGLBuffer;

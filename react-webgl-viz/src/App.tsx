@@ -1,7 +1,7 @@
 // @ts-ignore
 import { Matrix4 } from 'math.gl';
 import * as React from 'react';
-import Model from './webgl/model';
+import Model from './clientProcess/reactComponents/flowjo-vis/webgl/model';
 
 class App extends React.Component {
     private readonly canvasRef: React.RefObject<HTMLCanvasElement> = React.createRef();

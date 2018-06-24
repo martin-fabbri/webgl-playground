@@ -2,7 +2,7 @@
 /**Contains various algorithms used:
  * Author: Chris Wolf
  */
-import { ScaleType } from './../constants';
+import { ScaleType } from '../constants';
 import { GaussianSmoother } from './gaussianSmoother';
 import { Matrix } from './matrix2d';
 import { IPoint, Point, Vector } from './vector-points';

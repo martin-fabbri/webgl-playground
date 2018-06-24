@@ -299,8 +299,11 @@ function toTypedArray<T>(
     t: new (l: number) => T,
     cache: any
 ): T {
-    if (!Array.isArray(value)) {
+    if (!Array.isArray(value) && !(value instanceof Float32Array) && !(value instanceof Int32Array)
+      && !(value instanceof Uint32Array)
+    ) {
         const r = new t(1);
+        // @ts-ignore
         r[0] = value;
         return r;
     }
@@ -341,7 +344,8 @@ export function getUniformSetter(
     location: WebGLUniformLocation,
     info: WebGLActiveInfo
 ) {
-    const setter = uniformSetters[info.type];
+    // @ts-ignore
+  const setter = uniformSetters[info.type];
     if (!setter) {
         throw new Error(`Unknown GLSL uniform type ${info.type}`);
     }

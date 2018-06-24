@@ -1,5 +1,5 @@
-import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
-import { fragmentShader, fs, invalidSource } from '../../test/webgl2-canvas-mock/fixture';
+import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from './../../../../../tests/webgl2-canvas-mock';
+import { fragmentShader, fs, invalidSource } from './../../../../../tests/webgl2-canvas-mock/fixture';
 import { default as FragmentShader } from './fragment-shader';
 
 const canvas = new HTMLCanvasElementMock(100, 100);

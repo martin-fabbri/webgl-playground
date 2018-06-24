@@ -1,6 +1,6 @@
-import { fs, vs } from '../../test/webgl2-canvas-mock/fixture';
+import { fs, vs } from './../../../../../tests/webgl2-canvas-mock/fixture';
 
-import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from '../../test/webgl2-canvas-mock';
+import { HTMLCanvasElementMock, WebGL2RenderingContextMock } from './../../../../../tests/webgl2-canvas-mock';
 
 import Program, { IProgramProps } from './program';
 

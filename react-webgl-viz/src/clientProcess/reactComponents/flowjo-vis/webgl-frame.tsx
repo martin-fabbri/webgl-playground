@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styled from './theme';
+import styled from './theme/index';
 import Program from './webgl/program';
 
 interface IState {

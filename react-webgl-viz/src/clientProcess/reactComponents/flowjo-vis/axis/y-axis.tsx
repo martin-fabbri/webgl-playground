@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Orientation, TitlePosition } from '../utils/axis';
+import { Orientation, TitlePosition } from './../utils/axis';
 import Axis, { IProps } from './axis';
 
 interface IDefaultProps {

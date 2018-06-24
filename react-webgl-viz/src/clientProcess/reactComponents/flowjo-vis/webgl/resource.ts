@@ -4,8 +4,10 @@ const uidCounters = {};
  * Returns a unique resource id meant for caching
  */
 export function uid(id = 'resource-id') {
-    uidCounters[id] = uidCounters[id] || 1;
-    const count = uidCounters[id]++;
+    // @ts-ignore
+  uidCounters[id] = uidCounters[id] || 1;
+    // @ts-ignore
+  const count = uidCounters[id]++;
     return `${id}-${count}`;
 }
 

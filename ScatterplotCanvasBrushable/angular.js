@@ -1457,7 +1457,7 @@ function assertArgFn(arg, name, acceptArrayAnnotation) {
 
 /**
  * throw error if the name given is hasOwnProperty
- * @param  {String} name    the name to test
+ * @param  {String} name    the name to tests
  * @param  {String} context the context in which the name is used, such as module or directive
  */
 function assertNotHasOwnProperty(name, context) {
@@ -4320,7 +4320,7 @@ function Browser(window, document, $log, $sniffer) {
    */
   self.notifyWhenNoOutstandingRequests = function(callback) {
     // force browser to execute all pollFns - this is needed so that cookies and other pollers fire
-    // at some deterministic time in respect to the test runner's actions. Leaving things up to the
+    // at some deterministic time in respect to the tests runner's actions. Leaving things up to the
     // regular poller would result in flaky tests.
     forEach(pollFns, function(pollFn){ pollFn(); });
 
@@ -4588,7 +4588,7 @@ function Browser(window, document, $log, $sniffer) {
    * @description
    * Executes a fn asynchronously via `setTimeout(fn, delay)`.
    *
-   * Unlike when calling `setTimeout` directly, in test this function is mocked and instead of using
+   * Unlike when calling `setTimeout` directly, in tests this function is mocked and instead of using
    * `setTimeout` in tests, the fns are queued in an array, which can be programmatically flushed
    * via `$browser.defer.flush()`.
    *
@@ -4747,7 +4747,7 @@ function $CacheFactoryProvider() {
        *    }]);
        * ```
        *
-       * Example test:
+       * Example tests:
        *
        * ```js
        *  it('should behave like a cache', inject(function(superCache) {
@@ -6093,7 +6093,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           } catch (e) {
             // turns out that under some circumstances IE9 throws errors when one attempts to read
             // comment's node value.
-            // Just ignore it and continue. (Can't seem to reproduce in test case.)
+            // Just ignore it and continue. (Can't seem to reproduce in tests case.)
           }
           break;
       }
@@ -9806,7 +9806,7 @@ var promiseWarning;
 // disallow any "dotted" access to any member named "constructor".
 //
 // For reflective calls (a[b]) we check that the value of the lookup is not the Function constructor
-// while evaluating the expression, which is a stronger but more expensive test. Since reflective
+// while evaluating the expression, which is a stronger but more expensive tests. Since reflective
 // calls are expensive anyway, this is not such a big deal compared to static dereferencing.
 //
 // This sandboxing technique is not perfect and doesn't aim to be. The goal is to prevent exploits
@@ -11715,7 +11715,7 @@ function $RootScopeProvider(){
      *
      * Here is a simple scope snippet to show how you can interact with the scope.
      * ```html
-     * <file src="./test/ng/rootScopeSpec.js" tag="docs1" />
+     * <file src="./tests/ng/rootScopeSpec.js" tag="docs1" />
      * ```
      *
      * # Inheritance
@@ -14192,7 +14192,7 @@ function urlIsSameOrigin(requestUrl) {
      <file name="protractor.js" type="protractor">
       it('should display the greeting in the input box', function() {
        element(by.model('greeting')).sendKeys('Hello, E2E Tests');
-       // If we click the button it will block the test runner
+       tests
        // element(':button').click();
       });
      </file>

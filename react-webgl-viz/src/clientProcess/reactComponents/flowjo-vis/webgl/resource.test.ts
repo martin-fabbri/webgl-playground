@@ -1,7 +1,7 @@
 import {
     HTMLCanvasElementMock,
     WebGL2RenderingContextMock
-} from '../../test/webgl2-canvas-mock/index';
+} from './../../../../../tests/webgl2-canvas-mock/index';
 import { default as Resource, Handle, IResourceProps, uid } from './resource';
 
 const canvas = new HTMLCanvasElementMock(100, 100);

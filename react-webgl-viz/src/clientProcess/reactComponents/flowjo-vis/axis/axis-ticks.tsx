@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import styled, { theme } from '../theme/index';
+import styled, { theme } from './../theme/index';
 
-import { Orientation } from '../utils/axis';
+import { Orientation } from './../utils/axis';
 
-import { getScaleFunc, Scale, ScaleTypes } from '../utils/scales';
+import { getScaleFunc, Scale, ScaleTypes } from './../utils/scales';
 
 interface IProps {
     className?: string;

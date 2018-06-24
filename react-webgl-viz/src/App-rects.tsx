@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { default as VertexBuffer } from './webgl/buffer';
-import Program from './webgl/program';
+import { default as VertexBuffer } from './clientProcess/reactComponents/flowjo-vis/webgl/buffer';
+import Program from './clientProcess/reactComponents/flowjo-vis/webgl/program';
 
 const VERTEX_SHADER = `#version 300 es
 

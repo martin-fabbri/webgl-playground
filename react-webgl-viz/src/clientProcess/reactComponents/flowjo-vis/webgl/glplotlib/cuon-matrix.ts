@@ -88,7 +88,8 @@ export class Matrix4 {
         }
 
         for (i = 0; i < 16; ++i) {
-            d[i] = s[i];
+            // @ts-ignore
+          d[i] = s[i];
         }
 
         return this;
