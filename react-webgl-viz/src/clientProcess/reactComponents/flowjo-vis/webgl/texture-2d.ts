@@ -45,18 +45,22 @@ class Texture2d extends Resource {
     constructor(gl: WebGL2RenderingContext, props: ITextureProps) {
         super(gl);
 
-        const commonCombination = TEXTURE_FORMATS[props.dataFormat];
+        const commonCombination = TEXTURE_FORMATS[props.internalFormat];
+
+        if (!commonCombination) {
+            throw new Error(`Invalid Texture format: ${props.internalFormat}`);
+        }
 
         this.props = {
             data: props.data,
             border: props.border || 0,
-            dataFormat: props.dataFormat,
-            internalFormat: props.internalFormat || GL.RGBA,
+            dataFormat: props.dataFormat || commonCombination.dataFormat,
+            internalFormat: props.internalFormat,
             height: props.height || 1,
             level: props.level || 0,
             offset: props.offset || 0,
             recreate: props.recreate || false,
-            type: props.type || GL.UNSIGNED_BYTE,
+            type: props.type || commonCombination.type,
             width: props.width || 1
         };
     }

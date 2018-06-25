@@ -29,5 +29,6 @@ describe('WebGL#Program construct', () => {
         expect(testTexture2d).toBeInstanceOf(Texture2d);
 
         expect(testTexture2d.textureProps.internalFormat).toEqual(GL.R8);
+        expect(testTexture2d.textureProps.dataFormat).toEqual(GL.RED);
     });
 });
