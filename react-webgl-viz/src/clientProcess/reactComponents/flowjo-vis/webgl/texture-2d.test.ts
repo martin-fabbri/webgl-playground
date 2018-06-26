@@ -20,13 +20,13 @@ const testRedDataProps: ITextureProps = {
     internalFormat: GL.RED,
     width: 10
 };
-// const densityLevelsTexture = new Texture2d(gl, {
-//     dataFormat: gl.R32F,
-//     internalFormat: gl.RED,
-//     height: 1,
-//     type: gl.FLOAT,
-//     width: levels.length
-// });
+const testRgbData = new Uint32Array([0, 32, 60, 255, 87, 235]);
+const testRgbDataProps: ITextureProps = {
+    data: testRgbData,
+    height: 3,
+    internalFormat: GL.UNSIGNED_BYTE,
+    width: 2
+};
 
 describe('WebGL#Program construct', () => {
     it('constructs a texture using R8 common combinations', () => {
@@ -40,6 +40,19 @@ describe('WebGL#Program construct', () => {
         expect(testTexture2d.textureProps.width).toEqual(testR8DataProps.width);
         expect(testTexture2d.textureProps.height).toEqual(testR8DataProps.height);
         expect(testTexture2d.textureProps.data).toEqual(testR8DataProps.data);
+    });
+
+    it('constructs a texture using RED common combinations', () => {
+        const testTexture2d = new Texture2d(gl, testRedDataProps);
+        expect(testTexture2d).toBeInstanceOf(Texture2d);
+
+        expect(testTexture2d.textureProps.internalFormat).toEqual(GL.RED);
+        expect(testTexture2d.textureProps.dataFormat).toEqual(GL.R32F);
+        expect(testTexture2d.textureProps.type).toEqual(GL.FLOAT);
+        expect(testTexture2d.textureProps.border).toEqual(0);
+        expect(testTexture2d.textureProps.width).toEqual(testRedDataProps.width);
+        expect(testTexture2d.textureProps.height).toEqual(testRedDataProps.height);
+        expect(testTexture2d.textureProps.data).toEqual(testRedDataProps.data);
     });
 
     it('constructs a texture using RED common combinations', () => {
