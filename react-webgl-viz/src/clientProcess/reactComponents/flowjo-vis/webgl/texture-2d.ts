@@ -34,6 +34,7 @@ export const TEXTURE_FORMATS = {
     [GL.ALPHA]: {dataFormat: GL.ALPHA, type: GL.UNSIGNED_BYTE},
     [GL.LUMINANCE]: {dataFormat: GL.LUMINANCE, type: GL.UNSIGNED_BYTE},
     [GL.LUMINANCE_ALPHA]: {dataFormat: GL.LUMINANCE_ALPHA, type: GL.UNSIGNED_BYTE},
+    [GL.RED]: {dataFormat: GL.R32F, type: GL.FLOAT},
     [GL.R8]: {dataFormat: GL.RED, type: GL.UNSIGNED_BYTE},
     [GL.R32F]: {dataFormat: GL.RED, type: GL.FLOAT}
 };
@@ -52,11 +53,11 @@ class Texture2d extends Resource {
         }
 
         this.props = {
-            data: props.data,
             border: props.border || 0,
+            data: props.data,
             dataFormat: props.dataFormat || commonCombination.dataFormat,
-            internalFormat: props.internalFormat,
             height: props.height || 1,
+            internalFormat: props.internalFormat,
             level: props.level || 0,
             offset: props.offset || 0,
             recreate: props.recreate || false,
@@ -91,13 +92,11 @@ class Texture2d extends Resource {
         gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
-    public setData(data: TextureDataType) {
+    public setData(data: TextureDataType = this.props.data) {
         const { border, dataFormat, internalFormat, height, level, type, width} = this
             .props as TexturePropsWithDefaults;
         const { gl } = this;
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
-
-        // void gl.texImage2D(target, level, internalformat, width, height, border, format, type, ImageData source);
         gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, dataFormat, type, data);
         return this;
     }
