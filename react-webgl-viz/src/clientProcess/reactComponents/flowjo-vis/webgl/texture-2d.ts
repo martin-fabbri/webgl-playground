@@ -78,6 +78,10 @@ class Texture2d extends Resource {
         return this.unit;
     }
 
+    set textureUnit(unit: number) {
+        this.unit = unit;
+    }
+
     public bind(unit = this.unit) {
         const { gl, texture } = this;
         this.unit = unit;

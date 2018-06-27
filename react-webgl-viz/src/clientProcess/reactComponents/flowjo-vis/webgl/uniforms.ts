@@ -1,4 +1,6 @@
 // WebGL1
+import Texture2d from './texture-2d';
+
 const GL_FLOAT = 0x1406;
 const GL_FLOAT_VEC2 = 0x8b50;
 const GL_FLOAT_VEC3 = 0x8b51;
@@ -60,7 +62,7 @@ const FLOAT_ARRAY = {};
 const INT_ARRAY = {};
 const UINT_ARRAY = {};
 
-export type UniformArrayType = Float32Array | Int32Array | Uint32Array | ArrayLike<number> | number;
+export type UniformArrayType = Float32Array | Int32Array | Uint32Array | ArrayLike<number> | number | Texture2d;
 
 const uniformSetters = {
     // WebGL1

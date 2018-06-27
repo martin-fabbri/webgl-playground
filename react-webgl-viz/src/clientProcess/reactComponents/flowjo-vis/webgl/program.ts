@@ -1,14 +1,15 @@
 import { default as VertexBuffer } from './buffer';
 import FragmentShader from './fragment-shader';
 import { default as Resource, Handle, IResourceProps } from './resource';
+import Texture2d from './texture-2d';
 import { getUniformSetter, UniformArrayType } from './uniforms';
 import VertexArray from './vertex-array';
 import VertexShader from './vertex-shader';
 
+
 export interface IProgramProps extends IResourceProps {
     fs: string;
     vs: string;
-    // , fs, defaultUniforms, varyings, bufferMode = GL_SEPARATE_ATTRIBS
 }
 
 export interface IProgramBuffers {
@@ -26,6 +27,7 @@ export interface IUniformToSetterMap {
 export default class Program extends Resource {
     private readonly attributeToLocationMap: IAttributeToLocationMap = {};
     private readonly uniformSetters: IUniformToSetterMap = {};
+    private readonly textureUnits: Texture2d[] = [];
     private readonly viewport = new Float32Array(2);
     private clearColor = 0xffffffff;
 
@@ -59,7 +61,14 @@ export default class Program extends Resource {
         const { uniformSetters } = this;
 
         Object.keys(uniformSetters).map(k => {
-            uniformSetters[k](uniforms[k]);
+            let uniform = uniforms[k];
+
+            if (uniform instanceof Texture2d) {
+                this.textureUnits.push(uniform);
+                uniform.textureUnit = this.textureUnits.length - 1;
+                uniform = uniform.textureUnit;
+            }
+            uniformSetters[k](uniform);
         });
 
         return this;

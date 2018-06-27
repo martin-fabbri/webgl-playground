@@ -1,3 +1,4 @@
+import { GL } from '../../src/clientProcess/reactComponents/flowjo-vis/webgl/constants';
 import { IWebGLProgramMock, IWebGLShaderMock } from './webgl2-rendering-context-mock';
 
 export const vs = `
@@ -5,6 +6,8 @@ export const vs = `
     attribute vec2 data;
     uniform mat4 uMVMatrix;
     uniform vec2 u_resolution;
+    uniform sampler2D u_testTextureUniformId0;
+    uniform sampler2D u_testTextureUniformId1;
     varying vec3 vPosition;
     
     void main(void) {
@@ -72,12 +75,22 @@ export const program: IWebGLProgramMock = {
             name: 'u_resolution',
             size: 1,
             type: 35664
+        },
+        3: {
+            name: 'u_testTextureUniformId0',
+            size: 1,
+            type: GL.SAMPLER_2D
+        },
+        4: {
+            name: 'u_testTextureUniformId1',
+            size: 1,
+            type: GL.SAMPLER_2D
         }
     },
     parameters: {
         // ACTIVE_ATTRIBUTES
         0x8b89: 2,
         // ACTIVE_UNIFORMS
-        0x8b86: 3
+        0x8b86: 5
     }
 };
