@@ -112,8 +112,8 @@ class App extends React.Component {
         const texture2d = new Texture2d(gl!, {
             data,
             dataFormat: gl!.R8,
-            internalFormat: gl!.RED,
             height: 2,
+            internalFormat: gl!.RED,
             type: gl!.UNSIGNED_BYTE,
             width: 3
         });

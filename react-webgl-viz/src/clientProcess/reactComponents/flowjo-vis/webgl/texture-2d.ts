@@ -97,7 +97,8 @@ class Texture2d extends Resource {
             .props as TexturePropsWithDefaults;
         const { gl } = this;
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, dataFormat, type, data);
+        gl.texImage2D(gl.TEXTURE_2D, level, dataFormat, width, height, border, internalFormat, type, data);
+        // gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, width, height, border, dataFormat, type, data);
         return this;
     }
 

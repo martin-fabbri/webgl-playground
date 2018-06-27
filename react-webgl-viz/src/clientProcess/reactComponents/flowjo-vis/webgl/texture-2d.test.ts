@@ -24,7 +24,7 @@ const testRgbData = new Uint32Array([0, 32, 60, 255, 87, 235]);
 const testRgbDataProps: ITextureProps = {
     data: testRgbData,
     height: 3,
-    internalFormat: GL.UNSIGNED_BYTE,
+    internalFormat: GL.RGB,
     width: 2
 };
 
@@ -55,17 +55,17 @@ describe('WebGL#Program construct', () => {
         expect(testTexture2d.textureProps.data).toEqual(testRedDataProps.data);
     });
 
-    it('constructs a texture using RED common combinations', () => {
-        const testTexture2d = new Texture2d(gl, testRedDataProps);
+    it('constructs a texture using RGB common combinations', () => {
+        const testTexture2d = new Texture2d(gl, testRgbDataProps);
         expect(testTexture2d).toBeInstanceOf(Texture2d);
 
-        expect(testTexture2d.textureProps.internalFormat).toEqual(GL.RED);
-        expect(testTexture2d.textureProps.dataFormat).toEqual(GL.R32F);
-        expect(testTexture2d.textureProps.type).toEqual(GL.FLOAT);
+        expect(testTexture2d.textureProps.internalFormat).toEqual(GL.RGB);
+        expect(testTexture2d.textureProps.dataFormat).toEqual(GL.RGB);
+        expect(testTexture2d.textureProps.type).toEqual(GL.UNSIGNED_BYTE);
         expect(testTexture2d.textureProps.border).toEqual(0);
-        expect(testTexture2d.textureProps.width).toEqual(testRedDataProps.width);
-        expect(testTexture2d.textureProps.height).toEqual(testRedDataProps.height);
-        expect(testTexture2d.textureProps.data).toEqual(testRedDataProps.data);
+        expect(testTexture2d.textureProps.width).toEqual(testRgbDataProps.width);
+        expect(testTexture2d.textureProps.height).toEqual(testRgbDataProps.height);
+        expect(testTexture2d.textureProps.data).toEqual(testRgbDataProps.data);
     });
 });
 

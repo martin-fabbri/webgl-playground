@@ -4365,29 +4365,27 @@ class Model {
         // tslint:disable-next-line
         console.log('projMatrix', projMatrix);
 
-        const levels = Algorithms.generateLevels(histogram, LevelScale.ProbabilityDensity, 10);
-
         const histogramTexture = new Texture2d(gl, {
-            dataFormat: gl.R32F,
-            internalFormat: gl.RED,
+            data: histogram,
             height: dim,
-            type: gl.FLOAT,
+            internalFormat: gl.RED,
             width: dim
         });
-
         histogramTexture
             .bind(1)
             .magnification()
-            .setData(histogram);
+            .setData();
 
+        // tslint:disable-next-line
+        console.log('histogramTexture OK!!!!!');
+
+        const levels = Algorithms.generateLevels(histogram, LevelScale.ProbabilityDensity, 10);
         const densityLevelsTexture = new Texture2d(gl, {
-            dataFormat: gl.R32F,
-            internalFormat: gl.RED,
+            data: levels,
             height: 1,
-            type: gl.FLOAT,
+            internalFormat: gl.RED,
             width: levels.length
         });
-
         densityLevelsTexture
             .bind(2)
             .magnification()
@@ -4398,12 +4396,10 @@ class Model {
         const rgbTable = colorTableInfo.colorTables;
         const numTables = colorTableInfo.numberTables;
         const tableLen = colorTableInfo.tableLength / 3;
-
         const colorTableTexture = new Texture2d(gl, {
-            dataFormat: gl.RGB,
-            internalFormat: gl.RGB,
+            data: rgbTable,
             height: numTables,
-            type: gl.UNSIGNED_BYTE,
+            internalFormat: gl.RGB,
             width: tableLen
         });
 
