@@ -65,7 +65,11 @@ export default class Program extends Resource {
 
             if (uniform instanceof Texture2d) {
                 this.textureUnits.push(uniform);
-                uniform.textureUnit = this.textureUnits.length - 1;
+                uniform
+                    .bind(this.textureUnits.length - 1)
+                    .magnification()
+                    .setData();
+
                 uniform = uniform.textureUnit;
             }
             uniformSetters[k](uniform);

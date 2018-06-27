@@ -4386,10 +4386,6 @@ class Model {
             internalFormat: gl.RED,
             width: levels.length
         });
-        densityLevelsTexture
-            .bind(2)
-            .magnification()
-            .setData(levels);
 
         const colorTableInfo = ColorTable.getAllColorTables();
 
@@ -4402,11 +4398,6 @@ class Model {
             internalFormat: gl.RGB,
             width: tableLen
         });
-
-        colorTableTexture
-            .bind(0)
-            .magnification()
-            .setData(rgbTable);
 
         // tslint:disable-next-line
         console.log('transform.elements', transform.elements);
@@ -4421,8 +4412,8 @@ class Model {
             })
             .setUniforms({
                 u_activeColorTable: 0,
-                u_colorTableLookupId: colorTableTexture.textureUnit,
-                u_densityLevelLookupId: densityLevelsTexture.textureUnit,
+                u_colorTableLookupId: colorTableTexture,
+                u_densityLevelLookupId: densityLevelsTexture,
                 u_dimension: dim,
                 u_histogramLookupId: histogramTexture.textureUnit,
                 u_invProjMatrix: [
